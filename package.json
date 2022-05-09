@@ -1,0 +1,25 @@
+{
+  "name": "disgames-js",
+  "version": "1.0.0",
+  "description": "A useful package which allows you to add minigames to your discord.js bot easily",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewthederp/Disgames-djs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrewthederp/Disgames-djs/issues"
+  },
+  "homepage": "https://github.com/andrewthederp/Disgames-djs#readme",
+  "dependencies": {
+    "aki-api": "^6.0.8",
+    "chess.js": "^0.13.2",
+    "discord.js": "^14.0.0-dev.1651493371-4ba0f56",
+    "ohmyfetch": "^0.4.16"
+  }
+}

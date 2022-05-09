@@ -1,0 +1,13 @@
+const RockPaperScissors = require('./Games/rps')
+const TicTacToe = require('./Games/ttt')
+const Chess = require('./Games/chess')
+const Akinator = require('./Games/akinator')
+const Minesweeper = require('./Games/minesweeper')
+const Madlibs = require("./Games/madlibs")
+const Checkers = require("./Games/checkers")
+const Snake = require("./Games/snake")
+const Roulette = require("./Games/roulette")
+const Sokoban = require("./Games/soko")
+const Hangman = require("./Games/hangman")
+const Wordle = require("./Games/wordle")
+module.exports = {RockPaperScissors,TicTacToe,Chess,Akinator,Minesweeper,Madlibs,Checkers,Snake,Roulette,Sokoban,Hangman,Wordle}
