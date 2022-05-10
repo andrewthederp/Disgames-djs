@@ -1,6 +1,12 @@
-const {ButtonBuilder: MessageButton, ActionRowBuilder} = require('discord.js');
+const {EmbedBuilder,Interaction,ButtonBuilder: MessageButton, ActionRowBuilder} = require('discord.js');
 
 module.exports = class TicTacToe{
+	/**
+	 * @name TicTacToe
+	 * @kind constructor
+	 * @param {Interaction} interaction
+	 * @param {User} opponent
+	 */
 
 	constructor(int,opponent){
 		this.interaction = int
@@ -81,7 +87,7 @@ module.exports = class TicTacToe{
 
 		// if (this.member.bot) {
 		// 	return this.interaction.reply("You can't duel bots.")
-		// } else if (this.member.id === this.author.id){
+		// } else if (member.id === this.author.id){
 		// 	return this.interaction.reply("You can't duel yourself.")
 		// }
 
@@ -98,29 +104,33 @@ module.exports = class TicTacToe{
 
 		collector.on("collect",async(btn)=>{
 			// await btn.deferUpdate()
-			const x = btn.customId[0]
-			const y = btn.customId[1]
-			this.board[x][y] = this.turn
-			// console.log(x, y, this.board, this.turn)
-			let buttons = this.make_buttons()
-			const win = this.has_won()
-			if(win){
-				await btn.update({content:`Winner: ${this.turns[this.turn].toString()} (${this.turn})` , components:buttons})
-				collector.stop()
-			} else if(win==false){
-				await btn.update({content:'Tie!', components:buttons})
-				collector.stop()
+			if(btn.user.id!=this.turns[this.turn].id){
+				btn.reply({content:'It\'s not your turn', ephemeral:true })
 			} else {
-				if(this.turn=='x'){
-					this.turn = 'o'
-				}else{
-					this.turn = 'x'
+				const x = btn.customId[0]
+				const y = btn.customId[1]
+				this.board[x][y] = this.turn
+				let buttons = this.make_buttons()
+				const win = this.has_won()
+				if(win){
+					await btn.update({content:`Winner: ${this.turns[this.turn].toString()} (${this.turn})` , components:buttons})
+					collector.stop()
+				} else if(win==false){
+					await btn.update({content:'Tie!', components:buttons})
+					collector.stop()
+				} else {
+					if(this.turn=='x'){
+						this.turn = 'o'
+					}else{
+						this.turn = 'x'
+					}
+					await btn.update({content:'Turn: '+this.turns[this.turn].toString(), components:buttons})
 				}
-				await btn.update({content:'Turn: '+this.turns[this.turn].toString(), components:buttons})
 			}
-
 		})
 
 	}
 
 }
+
+
