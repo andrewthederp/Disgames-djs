@@ -72,26 +72,26 @@ module.exports = class TicTacToe{
 
 	async start(){
 		let buttons = this.make_buttons()
-		const duel = new Set()
-		if(duel.has(this.author)){
-			return this.interaction.reply("You are already in a duel")
-		}else if(duel.has(this.member)){
-			return this.interaction.reply("Your opponent is already in a duel")
-		}
+		// const duel = new Set()
+		// if(duel.has(this.author)){
+		// 	return this.interaction.reply("You are already in a duel")
+		// }else if(duel.has(this.member)){
+		// 	return this.interaction.reply("Your opponent is already in a duel")
+		// }
 
-		if (this.member.bot) {
-			return this.interaction.reply("You can't duel bots.")
-		} else if (this.member.id === this.author.id){
-			return this.interaction.reply("You can't duel yourself.")
-		}
+		// if (this.member.bot) {
+		// 	return this.interaction.reply("You can't duel bots.")
+		// } else if (this.member.id === this.author.id){
+		// 	return this.interaction.reply("You can't duel yourself.")
+		// }
 
 		this.interaction.reply({
 			content: 'Turn: '+this.turns[this.turn].toString(),
 			components: buttons
 		})
 
-		duel.add(this.author)
-		duel.add(this.member)
+		// duel.add(this.author)
+		// duel.add(this.member)
 		const msg = await this.interaction.fetchReply()
 		const filter = (i) => i.isButton() && i.user && (i.user.id == this.author.id || i.user.id == this.member.id)
 		const collector = msg.createMessageComponentCollector({ filter, time: 600_000})
