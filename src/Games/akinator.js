@@ -10,10 +10,10 @@ module.exports = class Akinator{
         this.region = options.region
         this.childMode = options.childMode
     }
+
     async start(){
         const regions = {"people": "en", "animals": "en_animals", "objects": "en_objects"};
         const region = regions[this.region.toLowerCase()]
-        console.log(this.region)
         const {childMode} = this
         const proxy = undefined
         const aki = new Aki({region, proxy,childMode})
@@ -24,8 +24,8 @@ module.exports = class Akinator{
         await aki.start()
         this.game(aki, int,i)
     }
+
     async game(aki, int,i){
-        try{
         i++
         const Embed = new EmbedBuilder().setTitle(`Question ${i}`).setDescription(aki.question).setColor(0x7289da).setFooter({text:`Progress: ${aki.progress}`})
         const buttons = []
@@ -38,30 +38,30 @@ module.exports = class Akinator{
         const message = await int.fetchReply()
         const collector = message.createMessageComponentCollector(m => m.user.id === int.user.id,{time: 60000})
         collector.on("collect", async m => {
-            console.log({int: int.user.id,m: m.user.id})
-            if(m.user.id !== int.user.id) return
-            m.deferUpdate()
-            const answer = parseInt(m.component.customId)
-            await aki.step(answer)
-            if(aki.progress >= 70 || aki.currentStep >= 80){
-                await aki.win()
-                const guess = aki.answers[0]
-                if(guess){
-                    Embed.setTitle(guess.name)
-                    Embed.setDescription(guess.description)
-                    Embed.setImage(guess.absolute_picture_path)
+            if(m.user.id == int.user.id){
+                m.deferUpdate()
+                const answer = parseInt(m.component.customId)
+                await aki.step(answer)
+                if(aki.progress >= 70 || aki.currentStep >= 80){
+                    await aki.win()
+                    const guess = aki.answers[0]
+                    if(guess){
+                        Embed.setTitle(guess.name)
+                        Embed.setDescription(guess.description)
+                        Embed.setImage(guess.absolute_picture_path)
 
-                }else{
-                    Embed.setTitle("You win!")
-                    Embed.setDescription("I couldn't guess the answer, play again?")
-                }
-                int.editReply({embeds: [Embed],components: []})
-            }else this.game(aki, int,i)
+                    }else{
+                        Embed.setTitle("You win!")
+                        Embed.setDescription("I couldn't guess the answer, play again?")
+                    }
+                    return int.editReply({embeds: [Embed],components: []})
+                }else this.game(aki, int,i)
+            } else {
+                m.reply({ content:"this is not your game", ephemeral:true })
+                this.game(aki, int,i-1)
+            }
             collector.stop()
         })
-    }catch(e){
-        console.error(e.stack)
-    }
     }
 }
 /*
