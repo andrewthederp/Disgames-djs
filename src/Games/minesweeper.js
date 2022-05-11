@@ -199,74 +199,78 @@ module.exports = class Minesweeper{
 		if(!this.interaction.replied) this.interaction.reply(options)
 		else this.interaction.editReply(options)
 		const msg = await this.interaction.fetchReply()
-		const collector = msg.createMessageComponentCollector({ filter: m => m.user.id == this.interaction.user.id && m.message.id == msg.id})
+		const collector = msg.createMessageComponentCollector({ time : 600_000 })
 		let end = false
 		collector.on('collect', async m => {
-			if(m.customId=='stop'){
-				const Embed = new EmbedBuilder()
-					.setTitle("Game ended")
-					.setDescription(`${this.format_board(vboard)}`)
-					.setColor(0x5865F2)
-				m.update({ embeds:[Embed], components:[] })
-				collector.stop()
-				return
-			}
-			m.showModal(modal).then(async() => {
-				const input = new InteractionCollector(this.interaction.client, { filter: m => m.user.id == this.interaction.user.id && m.message.id == msg.id })
-				input.on('collect', async i => {
-					if(!i.fields){
-						input.stop()
-					} else{
-						let s = i.fields.getTextInputValue("move")
-						const inp = s.split(" ")
-						for(let coor in inp){
-							const xy = this.get_coors(inp[coor])
-							// console.log(xy)
-							if(!xy){
-								continue
-							}
-							const x = xy[0]
-							const y = xy[1]
-							if(m.customId=='reveal'){
-								if(board[x][y] == '0'){
-									vboard = this.reveal_zeros(x,y,vboard,board)
-								}else if(board[x][y] == 'b'){
-									Embed = new EmbedBuilder()
-										.setTitle("You lost!")
-										.setDescription(`${this.format_board(this.reveal_all(vboard,board))}`)
-										.setColor("Red")
-									const opt = {content:"You lost! :pensive:", embeds: [Embed],components:[]}
-									this.interaction.editReply(opt)
-									collector.stop()
-									end = true
-									break
-								} else {
-									vboard[x][y] = board[x][y]
-								}
-							} else if(m.customId=='flag'){
-								if(vboard[x][y]==' '){
-									vboard[x][y] = 'f'
-								}
-							}
-						}
-						if(this.has_won(vboard,board)){
-							const { embeds } = msg
-							 Embed = new EmbedBuilder()
-								.setTitle("You won!")
-								.setDescription(`${this.format_board(this.reveal_all(vboard,board))}`)
-								.setColor(0x5865F2)
-							const options = {content:'You won!! :tada:', embeds: [Embed], components:[] }
-							if(!{ embeds } == options) i.update(options)
-							collector.stop()
+			if(m.user.id == this.interaction.user.id){
+				if(m.customId=='stop'){
+					const Embed = new EmbedBuilder()
+						.setTitle("Game ended")
+						.setDescription(`${this.format_board(vboard)}`)
+						.setColor(0x5865F2)
+					m.update({ embeds:[Embed], components:[] })
+					collector.stop()
+					return
+				}
+				m.showModal(modal).then(async() => {
+					const input = new InteractionCollector(this.interaction.client, { filter: m => m.user.id == this.interaction.user.id && m.message.id == msg.id })
+					input.on('collect', async i => {
+						if(!i.fields){
 							input.stop()
-						} else {
-							i.update({embeds: [Embed.setTitle("Minesweeper").setDescription(`${this.format_board(vboard)}`)]})
+						} else{
+							let s = i.fields.getTextInputValue("move")
+							const inp = s.split(" ")
+							for(let coor in inp){
+								const xy = this.get_coors(inp[coor])
+								// console.log(xy)
+								if(!xy){
+									continue
+								}
+								const x = xy[0]
+								const y = xy[1]
+								if(m.customId=='reveal'){
+									if(board[x][y] == '0'){
+										vboard = this.reveal_zeros(x,y,vboard,board)
+									}else if(board[x][y] == 'b'){
+										Embed = new EmbedBuilder()
+											.setTitle("You lost!")
+											.setDescription(`${this.format_board(this.reveal_all(vboard,board))}`)
+											.setColor("Red")
+										const opt = {content:"You lost! :pensive:", embeds: [Embed],components:[]}
+										this.interaction.editReply(opt)
+										collector.stop()
+										end = true
+										break
+									} else {
+										vboard[x][y] = board[x][y]
+									}
+								} else if(m.customId=='flag'){
+									if(vboard[x][y]==' '){
+										vboard[x][y] = 'f'
+									}
+								}
+							}
+							if(this.has_won(vboard,board)){
+								const { embeds } = msg
+								 Embed = new EmbedBuilder()
+									.setTitle("You won!")
+									.setDescription(`${this.format_board(this.reveal_all(vboard,board))}`)
+									.setColor(0x5865F2)
+								const options = {content:'You won!! :tada:', embeds: [Embed], components:[] }
+								if(!{ embeds } == options) i.update(options)
+								collector.stop()
+								input.stop()
+							} else {
+								i.update({embeds: [Embed.setTitle("Minesweeper").setDescription(`${this.format_board(vboard)}`)]})
+								input.stop()
+							}
 							input.stop()
 						}
-						input.stop()
-					}
+					})
 				})
-			})
+			} else {
+				m.reply({ content:'This is not your game', ephemeral:true })
+			}
 		})
 	}
 }
