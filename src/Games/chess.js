@@ -85,37 +85,38 @@ module.exports = class Chess1{
         const collector = msg.createMessageComponentCollector({filter: f => f.user.id == this.member.id || f.user.id == this.author.id,componentType: ComponentType.Button, time: 600_000} )
 
         collector.on("collect",async btn => {
-            if(btn.user.id == this.turns[chess.turn()].id){
-                // console.log(btn.customId)
-                if(btn.customId == "possible"){
-                    let Embed = await this.createBoard(chess, true)
-                    await btn.reply({content: `${chess.moves().map(m => `\`${m}\``).join(",")}`, ephemeral:true })
-                }
-                if(btn.customId == "stop"){
-                    button.setDisabled(true)
-                    stop.setDisabled(true)
-                    possible.setDisabled(true)
-                    await btn.update({content: `🛑 Game ended`, components: [new ActionRowBuilder().addComponents([button,stop,possible])]})
-                    collector.stop()
-                }
-                if(btn.customId == "click"){
+            if(btn.customId == "possible"){
+                let Embed = await this.createBoard(chess, true)
+                await btn.reply({content: `${chess.moves().map(m => `\`${m}\``).join(",")}`, ephemeral:true })
+            }
+            if(btn.customId == "stop"){
+                button.setDisabled(true)
+                stop.setDisabled(true)
+                possible.setDisabled(true)
+                const other_turn = chess.turn() == 'w' ? 'b' : 'w'
+                await btn.update({content: `Game ended by: ${this.turns[other_turn].toString()} (${color[other_turn]})`, components: [new ActionRowBuilder().addComponents([button,stop,possible])]})
+                collector.stop()
+            }
+            if(btn.customId == "click"){
+                if(btn.user.id == this.turns[chess.turn()].id){
                     btn.showModal(Modal).then(async() =>{
                         const input = new InteractionCollector(this.interaction.client,{time: 60_000})
                             input.on('collect', async i => {
                                 if(!i.fields){
                                     input.stop()
                                 } else {
-                                const c = i.fields?.getTextInputValue("move")
-                                if(c) chess.move(c,{sloppy: true})
-                                let Embed = await this.createBoard(chess)
-                                await i.update({content: `${color[chess.turn()]}'s turn`, embeds: [Embed]})
-                                input.stop()
-                            }
-                        })
+                                    const c = i.fields?.getTextInputValue("move")
+                                    if(c) chess.move(c,{sloppy: true})
+                                    let Embed = await this.createBoard(chess)
+                                    await i.update({content: `${color[chess.turn()]}'s turn`, embeds: [Embed]})
+                                    input.stop()
+                                }
+                            })
                     })
+                } else {
+                    btn.reply({ content:"this is not your turn", ephemeral:true })
                 }
             }
-
         })
     }
 }
