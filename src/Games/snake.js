@@ -212,6 +212,7 @@ module.exports = class Snake{
 		const collector = msg.createMessageComponentCollector({ filter: m => m.user.id == this.interaction.user.id && m.message.id == msg.id})
 		collector.on('collect', async m => {
 			if(m.customId=='stop'){
+				clearInterval(this.int)
 				const Embed = new EmbedBuilder()
 					.setTitle("Game ended")
 					.setDescription(this.format_board(this.s.get_board(), this.s.get_head_position()))
