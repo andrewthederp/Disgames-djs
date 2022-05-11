@@ -204,106 +204,110 @@ module.exports = class Checkers{
 				// console.log(this.moves().map(m => ` \`${m}\``).join(","))
 				await m.reply({content: `${this.moves().map(m => ` \`${m}\``).join(",")}`, ephemeral:true })
 			} else{
-				let switch_turns = true
-				m.showModal(modal).then(async() => {
-					const input = new InteractionCollector(this.interaction.client, { filter: m => (m.user.id == this.author.id || m.user.id == this.member.id ) && m.message.id == msg.id })
-					input.on('collect', async i => {
-						if(!i.fields){
-							collector.stop()
-							input.stop()
-						} else {
-							let s = i.fields.getTextInputValue("move")
-							const xy = this.get_coors(s)
-							const x = xy[0]
-							const y = xy[1]
-							const inc = this.opts[m.customId]
-							const x_ = x+inc[0]
-							const y_ = y+inc[1]
-							const x__ =  x+(inc[0]*2)
-							const y__ =  y+(inc[1]*2)
-							if(x > 7 || x < 0){
+				if(m.user.id == this.turns[this.turn].id){
+					let switch_turns = true
+					m.showModal(modal).then(async() => {
+						const input = new InteractionCollector(this.interaction.client, { filter: m => (m.user.id == this.author.id || m.user.id == this.member.id ) && m.message.id == msg.id })
+						input.on('collect', async i => {
+							if(!i.fields){
+								collector.stop()
 								input.stop()
-								switch_turns = false
-							} else if(y > 7 || y < 0){
-								input.stop()
-								switch_turns = false
-							} else if(x_ > 7 || x_ < 0){
-								input.stop()
-								switch_turns = false
-							} else if(y_ > 7 || y_ < 0){
-								input.stop()
-								input.stop()
-								switch_turns = false
-							} else if(this.board[x][y][0] != this.turn){
-								input.stop()
-								switch_turns = false
-							} else if(this.board[x][y] == 'b' && inc[0] == -1 && this.board[x][y][1] == undefined){
-								input.stop()
-								switch_turns = false
-							} else if(this.board[x][y] == 'r' && inc[0] == 1 && this.board[x][y][1] == undefined){
-								input.stop()
-								switch_turns = false
 							} else {
-								if (this.board[x_][y_] == ' '){
-									this.board[x_][y_] = this.board[x][y]
-									this.board[x][y] = ' '
-									if(x_ == 0 || x_ == 7){
-										this.board[x_][y_] = this.turn+'k'
-									} else {
-										input.stop()
-									}
-								} else if(this.board[x_][y_][0] == this.other_turn){
-									if(this.board[x__][y__] == ' '){
-										if(x__ > 7 || x__ < 0){
-											input.stop()
-											switch_turns = false
-										} else if(y__ > 7 || y__ < 0){
-											input.stop()
-											switch_turns = false
-										}
-										this.board[x__][y__] = this.board[x][y]
+								let s = i.fields.getTextInputValue("move")
+								const xy = this.get_coors(s)
+								const x = xy[0]
+								const y = xy[1]
+								const inc = this.opts[m.customId]
+								const x_ = x+inc[0]
+								const y_ = y+inc[1]
+								const x__ =  x+(inc[0]*2)
+								const y__ =  y+(inc[1]*2)
+								if(x > 7 || x < 0){
+									input.stop()
+									switch_turns = false
+								} else if(y > 7 || y < 0){
+									input.stop()
+									switch_turns = false
+								} else if(x_ > 7 || x_ < 0){
+									input.stop()
+									switch_turns = false
+								} else if(y_ > 7 || y_ < 0){
+									input.stop()
+									input.stop()
+									switch_turns = false
+								} else if(this.board[x][y][0] != this.turn){
+									input.stop()
+									switch_turns = false
+								} else if(this.board[x][y] == 'b' && inc[0] == -1 && this.board[x][y][1] == undefined){
+									input.stop()
+									switch_turns = false
+								} else if(this.board[x][y] == 'r' && inc[0] == 1 && this.board[x][y][1] == undefined){
+									input.stop()
+									switch_turns = false
+								} else {
+									if (this.board[x_][y_] == ' '){
+										this.board[x_][y_] = this.board[x][y]
 										this.board[x][y] = ' '
-										this.board[x_][y_] = ' '
-										if(x__ == 0 || x__ == 7){
+										if(x_ == 0 || x_ == 7){
 											this.board[x_][y_] = this.turn+'k'
+										} else {
+											input.stop()
 										}
-									} else {
-										input.stop()
-										switch_turns = false
+									} else if(this.board[x_][y_][0] == this.other_turn){
+										if(this.board[x__][y__] == ' '){
+											if(x__ > 7 || x__ < 0){
+												input.stop()
+												switch_turns = false
+											} else if(y__ > 7 || y__ < 0){
+												input.stop()
+												switch_turns = false
+											}
+											this.board[x__][y__] = this.board[x][y]
+											this.board[x][y] = ' '
+											this.board[x_][y_] = ' '
+											if(x__ == 0 || x__ == 7){
+												this.board[x_][y_] = this.turn+'k'
+											}
+										} else {
+											input.stop()
+											switch_turns = false
+										}
 									}
 								}
 							}
-						}
 
-					if(switch_turns){
-						if(this.turn=='r'){
-							this.turn = 'b'
-							this.other_turn = 'r'
+						if(switch_turns){
+							if(this.turn=='r'){
+								this.turn = 'b'
+								this.other_turn = 'r'
+							} else {
+								this.turn = 'r'
+								this.other_turn = 'b'
+							}
+						}
+						if(this.has_won()){
+							const Embed = new EmbedBuilder()
+								.setTitle("Checkers")
+								.setDescription(`Winner: ${this.turns[this.other_turn].toString()} (${this.colors[this.other_turn]})\n\n${this.format_board(this.board)}`)
+								.setColor(0x5865F2)
+
+							i.update({embeds: [Embed], components: [] })
+							input.stop()
+							collector.stop()
 						} else {
-							this.turn = 'r'
-							this.other_turn = 'b'
+							const Embed = new EmbedBuilder()
+								.setTitle("Checkers")
+								.setDescription(`Turn: ${this.turns[this.turn].toString()} (${this.colors[this.turn]})\n\n${this.format_board(this.board)}`)
+								.setColor(0x5865F2)
+
+							i.update({embeds: [Embed]})
+							input.stop()
 						}
-					}
-					if(this.has_won()){
-						const Embed = new EmbedBuilder()
-							.setTitle("Checkers")
-							.setDescription(`Winner: ${this.turns[this.other_turn].toString()} (${this.colors[this.other_turn]})\n\n${this.format_board(this.board)}`)
-							.setColor(0x5865F2)
-
-						i.update({embeds: [Embed], components: [] })
-						input.stop()
-						collector.stop()
-					} else {
-						const Embed = new EmbedBuilder()
-							.setTitle("Checkers")
-							.setDescription(`Turn: ${this.turns[this.turn].toString()} (${this.colors[this.turn]})\n\n${this.format_board(this.board)}`)
-							.setColor(0x5865F2)
-
-						i.update({embeds: [Embed]})
-						input.stop()
-					}
+						})
 					})
-				})
+				} else {
+					m.reply({ content:"this is not your turn", ephemeral:true })
+				}
 			}
 		})
 	}
