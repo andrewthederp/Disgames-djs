@@ -1,4 +1,4 @@
-import {Interaction,User,ActionRowBuilder,EmbedBuilder,ButtonBuilder} from "discord.js"
+import {Interaction,User,ActionRowBuilder, EmbedBuilder, ButtonBuilder} from "discord.js"
 import {Chess as Chess1} from "chess.js"
 import {Aki as Aki} from "aki-api"
 interface AkiOptions{
@@ -73,7 +73,11 @@ export class Sokoban{
     start(): Promise<void>
 }
 export class Hangman{
-    constructor(interaction: Interaction,min?: number,max?: number)
+    constructor(interaction: Interaction,options:{
+        min?: number
+        max?: number
+        word?: string
+    })
     private make_hangman(): string
     private make_embed(title: string): EmbedBuilder
     start(): Promise<void>
