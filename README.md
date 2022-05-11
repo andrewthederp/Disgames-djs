@@ -64,7 +64,7 @@ The Hangman constructor takes two parameters. `Interaction` (required) and `opti
 if a word is provided it will be used regardless of whether a min/max was provided or not.
 
 ```js
-new disgames.Hangman(interaction,{3,7,undefined}).start()
+new disgames.Hangman(interaction,{min:3, max:7, word:undefined}).start()
 ```
 
 ### Madlibs
