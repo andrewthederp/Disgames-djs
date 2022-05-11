@@ -21,7 +21,7 @@ npm i disgames-js
 To install the development version, you need [git](https://git-scm.com/downloads) installed. After installing it, run
 
 ```shell
-npm i npm i andrewthederp/Disgames-djs
+npm i andrewthederp/Disgames-djs
 ```
 
 ## Example 
