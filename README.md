@@ -1,5 +1,6 @@
 # Disgames.js
 Disgames is an easy-to-use fully customizable npm package made to allow you to easily add games to your discord.js bot!
+
 NOTE: This package requires discord.js v14 to install run `npm i discord.js@dev`
 
 ---
