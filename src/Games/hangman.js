@@ -5,8 +5,11 @@ const numbers = new RegExp(/^[0-9]+$/)
 const symbols = new RegExp(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)
 
 module.exports = class Hangman{
-	constructor(interaction,min,max,word){
+	constructor(interaction,options){
 		if(!interaction) throw new TypeError("Interaction missing")
+		const min = options.min
+		const max = options.max
+		const word = options.word
 		if(!min) min = 3
 		if(!max) max = 7
 		this.interaction = interaction
