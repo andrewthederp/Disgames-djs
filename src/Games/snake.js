@@ -1,4 +1,4 @@
-const {EmbedBuilder, ButtonBuilder, ActionRowBuilder} = require("discord.js")
+const {MessageEmbed, MessageButton, MessageActionRow} = require("discord.js")
 
 class SnakeGame{
 	constructor(board){
@@ -132,7 +132,7 @@ module.exports = class Snake{
 	}
 
 	create_disabled_button(){
-    	const btn = new ButtonBuilder()
+    	const btn = new MessageButton()
 		.setLabel("\u200b")
         .setStyle("Secondary")
         .setCustomId(JSON.stringify(Math.floor(Math.random()*100000)))
@@ -155,7 +155,7 @@ module.exports = class Snake{
 			title = 'You won'
 		}
 
-		const Embed = new EmbedBuilder()
+		const Embed = new MessageEmbed()
 			.setTitle(title)
 			.setDescription(desc)
 			.setColor(0x5865F2)
@@ -170,35 +170,35 @@ module.exports = class Snake{
 	}
 
 	async start(){
-    	const up_btn = new ButtonBuilder()
+    	const up_btn = new MessageButton()
         .setStyle("Primary")
         .setCustomId('u')
         .setEmoji('⬆')
 		const btns1 = [this.create_disabled_button(), up_btn, this.create_disabled_button()]
 
-    	const left_btn = new ButtonBuilder()
+    	const left_btn = new MessageButton()
         .setStyle("Primary")
         .setCustomId('l')
         .setEmoji('⬅')
-    	const stop = new ButtonBuilder()
+    	const stop = new MessageButton()
         .setStyle("Danger")
         .setCustomId("stop")
         .setEmoji('⏹')
-    	const right_btn = new ButtonBuilder()
+    	const right_btn = new MessageButton()
         .setStyle("Primary")
         .setCustomId('r')
         .setEmoji('➡')
         const btns2 = [left_btn, stop, right_btn]
 
-        const down_btn = new ButtonBuilder()
+        const down_btn = new MessageButton()
         .setStyle("Primary")
         .setCustomId('d')
         .setEmoji('⬇')
         const btns3 = [this.create_disabled_button(), down_btn, this.create_disabled_button()]
 
-		this.rows = [new ActionRowBuilder().addComponents(btns1), new ActionRowBuilder().addComponents(btns2), new ActionRowBuilder().addComponents(btns3)]
+		this.rows = [new MessageActionRow().addComponents(btns1), new MessageActionRow().addComponents(btns2), new MessageActionRow().addComponents(btns3)]
 
-		const Embed = new EmbedBuilder()
+		const Embed = new MessageEmbed()
 			.setTitle("Snake")
 			.setDescription(this.format_board(this.s.get_board(), this.s.get_head_position()))
 			.setColor(0x5865F2)
@@ -213,7 +213,7 @@ module.exports = class Snake{
 		collector.on('collect', async m => {
 			if(m.customId=='stop'){
 				clearInterval(this.int)
-				const Embed = new EmbedBuilder()
+				const Embed = new MessageEmbed()
 					.setTitle("Game ended")
 					.setDescription(this.format_board(this.s.get_board(), this.s.get_head_position()))
 					.setColor(0x5865F2)
