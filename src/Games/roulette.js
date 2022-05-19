@@ -1,4 +1,4 @@
-const {ButtonBuilder,EmbedBuilder,ActionRowBuilder} = require("discord.js")
+const { MessageButton, MessageEmbed, MessageActionRow } = require("discord.js")
 module.exports = class RussianRoulette{
     constructor(interaction,opponent){
         this.interaction = interaction
@@ -8,15 +8,15 @@ module.exports = class RussianRoulette{
         const players = [this.interaction.user,this.opponent].sort(() => Math.random() - 0.5)
         let i = 0
         let turn = players[i]
-        const Embed = new EmbedBuilder()
+        const Embed = new MessageEmbed()
             .setTitle("Russian Roulette")
             .setColor("Blurple")
             .setDescription(`${turn.username} is the gunner.`)
-        const Button = new ButtonBuilder()
+        const Button = new MessageButton()
             .setLabel("Pull the trigger!")
             .setStyle("Danger")
             .setCustomId("pull")
-        this.interaction.reply({embeds:[Embed],components:[new ActionRowBuilder().addComponents([Button])]})
+        this.interaction.reply({embeds:[Embed],components:[new MessageActionRow().addComponents([Button])]})
         const msg = await this.interaction.fetchReply()
         const input = msg.createMessageComponentCollector(m => m.user.id == turn.id && m.component.customId == "pull")
         input.on("collect",(inp) => {
@@ -28,7 +28,7 @@ module.exports = class RussianRoulette{
                 else i = 0
                 turn = players[i]
                 Embed.setDescription(`${turn.username} is the gunner.`)
-                inp.update({ embeds: [Embed], components: [new ActionRowBuilder().addComponents([Button])] })
+                inp.update({ embeds: [Embed], components: [new MessageActionRow().addComponents([Button])] })
             }else{
                 Embed.setDescription(`${turn.username} **was** the gunner.\n\n**You died.**`)
                 .setColor("Red")
