@@ -1,4 +1,4 @@
-const {EmbedBuilder,Interaction,ButtonBuilder: MessageButton, ActionRowBuilder} = require('discord.js');
+const { Interaction, MessageButton, MessageActionRow} = require('discord.js');
 
 module.exports = class TicTacToe{
 	/**
@@ -37,7 +37,7 @@ module.exports = class TicTacToe{
 				}
 				temp_lst.push(btn)
 			}
-			buttons.push(new ActionRowBuilder().addComponents(temp_lst))
+			buttons.push(new MessageActionRow().addComponents(temp_lst))
 		}
 		return buttons
 	}
