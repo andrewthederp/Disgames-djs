@@ -1,4 +1,4 @@
-const {ButtonBuilder,EmbedBuilder,ActionRowBuilder, ComponentType} = require("discord.js")
+const {MessageButton,MessageEmbed,MessageActionRow, ComponentType} = require("discord.js")
 module.exports = class Sokoban{
 	constructor(interaction,options){
 		this.interaction = interaction
@@ -85,7 +85,7 @@ module.exports = class Sokoban{
 	}
 
 	create_disabled_button(){
-    	const btn = new ButtonBuilder()
+    	const btn = new MessageButton()
 		.setLabel("\u200b")
         .setStyle("Secondary")
         .setCustomId(JSON.stringify(Math.floor(Math.random()*100000)))
@@ -99,45 +99,45 @@ module.exports = class Sokoban{
 
 		const directions = {'u':[-1,0],'l':[0,-1],'r':[0,1],'d':[1,0]}
 		// const b_directions = {'u':[-2,0],'l':[0,-2],'r':[0,2],'d':[2,0]}
-		const Embed = new EmbedBuilder()
+		const Embed = new MessageEmbed()
 			.setTitle("Sokoban")
 			.setDescription(this.format_board(this.board))
 			.setColor("#0099ff")
 			.setFooter({text: "Use the arrow keys to move"})
 
-    	const up_btn = new ButtonBuilder()
+    	const up_btn = new MessageButton()
         .setStyle("Primary")
         .setCustomId('u')
         .setEmoji('⬆')
 		const btns1 = [this.create_disabled_button(), up_btn, this.create_disabled_button()]
 
-    	const left_btn = new ButtonBuilder()
+    	const left_btn = new MessageButton()
         .setStyle("Primary")
         .setCustomId('l')
         .setEmoji('⬅')
-    	const reload = new ButtonBuilder()
+    	const reload = new MessageButton()
         .setStyle("Primary")
         .setCustomId("reload")
         .setEmoji('🔄')
-    	const right_btn = new ButtonBuilder()
+    	const right_btn = new MessageButton()
         .setStyle("Primary")
         .setCustomId('r')
         .setEmoji('➡')
         const btns2 = [left_btn, reload, right_btn]
 
-        const down_btn = new ButtonBuilder()
+        const down_btn = new MessageButton()
         .setStyle("Primary")
         .setCustomId('d')
         .setEmoji('⬇')
         const btns3 = [this.create_disabled_button(), down_btn, this.create_disabled_button()]
 
-    	const stop = new ButtonBuilder()
+    	const stop = new MessageButton()
         .setStyle("Danger")
         .setCustomId("stop")
         .setEmoji('⏹')
 	    const btns4 = [stop]
 
-	    const rows = [new ActionRowBuilder().addComponents(btns1), new ActionRowBuilder().addComponents(btns2), new ActionRowBuilder().addComponents(btns3), new ActionRowBuilder().addComponents(btns4)]
+	    const rows = [new MessageActionRow().addComponents(btns1), new MessageActionRow().addComponents(btns2), new MessageActionRow().addComponents(btns3), new MessageActionRow().addComponents(btns4)]
 
 		this.interaction.reply({ embeds: [Embed], components: rows})
 		const msg = await this.interaction.fetchReply()
@@ -146,14 +146,14 @@ module.exports = class Sokoban{
 			if(btn.customId=='reload'){
 				this.board = JSON.parse(JSON.stringify(this.board_copy))
 				// this.board_copy = JSON.parse(JSON.stringify(this.board))
-				const embed = new EmbedBuilder()
+				const embed = new MessageEmbed()
 				.setTitle("Sokoban")
 				.setDescription(this.format_board(this.board))
 				.setColor("#0099ff")
 				.setFooter({text: "Use the arrow keys to move"})
 				btn.update({ content: '', embeds: [embed] })
 			} else if (btn.customId=='stop'){
-				const embed = new EmbedBuilder()
+				const embed = new MessageEmbed()
 				.setTitle("Game ended")
 				.setDescription(this.format_board(this.board))
 				.setColor("#0099ff")
@@ -202,14 +202,14 @@ module.exports = class Sokoban{
 					if(this.has_won(this.board)){
 						this.board = this.create_board()
 						this.board_copy = JSON.parse(JSON.stringify(this.board))
-						const embed = new EmbedBuilder()
+						const embed = new MessageEmbed()
 						.setTitle("Sokoban")
 						.setDescription(this.format_board(this.board))
 						.setColor("#0099ff")
 						.setFooter({text: "Use the arrow keys to move"})
 						btn.update({ content: 'You won!', embeds: [embed] })
 					} else {
-						const embed = new EmbedBuilder()
+						const embed = new MessageEmbed()
 						.setTitle("Sokoban")
 						.setDescription(this.format_board(this.board))
 						.setColor("#0099ff")
