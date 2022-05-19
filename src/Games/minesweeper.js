@@ -1,4 +1,4 @@
-const {EmbedBuilder, ButtonBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, InteractionCollector} = require("discord.js")
+const {MessageEmbed, MessageButton, Modal, TextInputBuilder, MessageActionRow, TextInputStyle, InteractionCollector} = require("discord.js")
 
 module.exports = class Minesweeper{
 	constructor(interaction,chance){
@@ -174,28 +174,28 @@ module.exports = class Minesweeper{
 		.setCustomId("move")
 		.setMinLength(2)
 		// .setMaxLength(3)
-		const modal = new ModalBuilder()
+		const modal = new Modal()
 		.setCustomId("Minesweeper")
 		.setTitle("Minesweeper")
-		const action = new ActionRowBuilder().addComponents([input])
+		const action = new MessageActionRow().addComponents([input])
 		modal.addComponents([action])
-		const reveal = new ButtonBuilder()
+		const reveal = new MessageButton()
 		.setLabel("Reveal")
 		.setCustomId("reveal")
 		.setStyle("Success")
-		const flag = new ButtonBuilder()
+		const flag = new MessageButton()
 		.setLabel("Flag")
 		.setCustomId("flag")
 		.setStyle("Danger")
-    	const stop = new ButtonBuilder()
+    	const stop = new MessageButton()
         .setLabel("STOP")
         .setStyle("Danger")
         .setCustomId("stop")
-		let Embed = new EmbedBuilder()
+		let Embed = new MessageEmbed()
 			.setTitle("Minesweeper")
 			.setDescription(`${this.format_board(vboard)}`)
 			.setColor(0x5865F2)
-		const options = {embeds: [Embed], components: [new ActionRowBuilder().addComponents([reveal, flag, stop])]}
+		const options = {embeds: [Embed], components: [new MessageActionRow().addComponents([reveal, flag, stop])]}
 		if(!this.interaction.replied) this.interaction.reply(options)
 		else this.interaction.editReply(options)
 		const msg = await this.interaction.fetchReply()
@@ -204,7 +204,7 @@ module.exports = class Minesweeper{
 		collector.on('collect', async m => {
 			if(m.user.id == this.interaction.user.id){
 				if(m.customId=='stop'){
-					const Embed = new EmbedBuilder()
+					const Embed = new MessageEmbed()
 						.setTitle("Game ended")
 						.setDescription(`${this.format_board(vboard)}`)
 						.setColor(0x5865F2)
@@ -232,7 +232,7 @@ module.exports = class Minesweeper{
 									if(board[x][y] == '0'){
 										vboard = this.reveal_zeros(x,y,vboard,board)
 									}else if(board[x][y] == 'b'){
-										Embed = new EmbedBuilder()
+										Embed = new MessageEmbed()
 											.setTitle("You lost!")
 											.setDescription(`${this.format_board(this.reveal_all(vboard,board))}`)
 											.setColor("Red")
@@ -252,7 +252,7 @@ module.exports = class Minesweeper{
 							}
 							if(this.has_won(vboard,board)){
 								const { embeds } = msg
-								 Embed = new EmbedBuilder()
+								 Embed = new MessageEmbed()
 									.setTitle("You won!")
 									.setDescription(`${this.format_board(this.reveal_all(vboard,board))}`)
 									.setColor(0x5865F2)
