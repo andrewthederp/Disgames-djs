@@ -3,7 +3,7 @@ const symbols = new RegExp(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)
 fs = require("fs")
 path = require("path")
 words = fs.readFileSync(path.resolve(__dirname,"words.txt"),{encoding:'utf8', flag:'r'}).split("\n").filter(w => w.length == 5 && !numbers.test(w) && !symbols.test(w)).map(w => w.replace("\r","")).map(w => w.toUpperCase())
-const { EmbedBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle,ButtonBuilder, InteractionCollector, ComponentType} = require("discord.js")
+const { MessageEmbed, Modal, MessageActionRow, TextInputBuilder, TextInputStyle, MessageButton, InteractionCollector, ComponentType} = require("discord.js")
 
 
 
