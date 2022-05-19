@@ -3,7 +3,7 @@ let Chess = []
     Chess.push(await import("chess.js"))
 })()
 
-const { EmbedBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle,ButtonBuilder, InteractionCollector, ComponentType} = require("discord.js")
+const { MessageEmbed, Modal, ActionRowBuilder, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType} = require("discord.js")
 module.exports = class Chess1{
     constructor(interaction,opponent){
         this.interaction = interaction
@@ -15,7 +15,7 @@ module.exports = class Chess1{
 
     async createBoard(chess, moves=false){
         const fen = encodeURIComponent(chess.fen())
-        const Embed = new EmbedBuilder()
+        const Embed = new MessageEmbed()
         .setTitle("Chess")
         .setImage(`http://www.fen-to-image.com/image/64/double/coords/${fen}`)
         .setColor(0x7289da)
@@ -55,10 +55,10 @@ module.exports = class Chess1{
         //     await this.game(chess,gameData)
         // }
         // async game(chess,gameData){
-        const Modal = new ModalBuilder()
+        const Modal = new Modal()
         .setCustomId("chess")
         .setTitle("Chess")
-        const text = new TextInputBuilder()
+        const text = new TextInputComponent()
         .setStyle(TextInputStyle.Short)
         .setLabel(`Your turn`)
         .setCustomId(`move`)
@@ -66,15 +66,15 @@ module.exports = class Chess1{
         Modal.addComponents([act])
         let Embed = await this.createBoard(chess)
         const color = {'w':'White','b':'Black'}
-        const button = new ButtonBuilder()
+        const button = new MessageActionRow()
                        .setLabel("CLICK HERE")
                        .setStyle("Primary")
                        .setCustomId("click")
-        const stop = new ButtonBuilder()
+        const stop = new MessageActionRow()
                         .setLabel("STOP")
                         .setStyle("Danger")
                         .setCustomId("stop")
-        const possible = new ButtonBuilder()
+        const possible = new MessageActionRow()
                         .setLabel("POSSIBLE MOVES")
                         .setStyle("Secondary")
                         .setCustomId("possible")
