@@ -1,4 +1,4 @@
-const {EmbedBuilder, ButtonBuilder, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, InteractionCollector,ComponentType} = require("discord.js")
+const {MessageEmbed, MessageButton, Modal, TextInputComponent, MessageActionRow, TextInputStyle, InteractionCollector,ComponentType} = require("discord.js")
 const {readFileSync} = require("fs")
 const {resolve} = require("path")
 const numbers = new RegExp(/^[0-9]+$/)
@@ -52,7 +52,7 @@ module.exports = class Hangman{
 
 	make_embed(title='Hangman'){
 		let templst = [...new Set(this.guesses)]
-		const Embed = new EmbedBuilder()
+		const Embed = new MessageEmbed()
 		.setTitle(title)
 		.setDescription(`${this.make_hangman()}`)
 		.addFields([{name:"Word",value:`${this.revealed_word.join("  ")}`},{name:"Guesses",value:`[${templst.map(i=>`:regional_indicator_${i}:`).join(' ')}]`}])
@@ -87,28 +87,28 @@ module.exports = class Hangman{
 
 
 	async start(){
-		const Modal = new ModalBuilder()
+		const Modal = new Modal()
 		.setCustomId("hangman")
 		.setTitle("Hangman")
-		const text = new TextInputBuilder()
+		const text = new TextInputComponent()
 		.setStyle(TextInputStyle.Short)
 		.setLabel(`Your guess`)
 		.setCustomId(`guess`)
-		const act = new ActionRowBuilder().addComponents([text]);
+		const act = new MessageActionRow().addComponents([text]);
 		Modal.addComponents([act])
 
-		const button = new ButtonBuilder()
+		const button = new MessageButton()
 		.setLabel("click to guess")
 		.setStyle("Primary")
 		.setCustomId("click")
 
-		const stop = new ButtonBuilder()
+		const stop = new MessageButton()
 		.setLabel("STOP")
 		.setStyle("Danger")
 		.setCustomId("stop")
 
 		let Embed = this.make_embed()
-		const row = [new ActionRowBuilder().addComponents([button, stop])]
+		const row = [new MessageActionRow().addComponents([button, stop])]
 		await this.interaction.reply({embeds: [Embed],components: row})
 
 		const msg = await this.interaction.fetchReply()
