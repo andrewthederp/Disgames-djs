@@ -1,5 +1,5 @@
 const {$fetch} = require("ohmyfetch")
-const { MessageEmbed, MessageButton, TextInputBuilder,MessageActionRow,Modal, TextInputStyle, InteractionCollector} = require("discord.js")
+const { MessageEmbed, MessageButton, TextInputComponent,MessageActionRow,Modal, TextInputStyle, InteractionCollector} = require("discord.js")
 
 module.exports = class MadLibs {
     constructor(interaction,min,max) {
@@ -32,7 +32,7 @@ module.exports = class MadLibs {
                 if(blanks.length !== i){
                     const question = blanks[i]
                     const ana =  ["a","e","i","o","u"].includes(question[0]) ? "an" : "a"
-                    const text = new TextInputBuilder()
+                    const text = new TextInputComponent()
                     .setLabel(`Enter ${ana} ${question}`)
                     .setStyle(TextInputStyle.Short)
                     .setCustomId("answer")
