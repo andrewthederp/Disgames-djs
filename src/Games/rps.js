@@ -1,4 +1,4 @@
-const {Interaction, ButtonBuilder, ActionRowBuilder,ComponentType} = require('discord.js')
+const {Interaction, MessageButton, MessageActionRow, ComponentType} = require('discord.js')
 
 module.exports = class RPS{
     /**
@@ -28,23 +28,23 @@ module.exports = class RPS{
 	}
 
     async start(){
-        const scissor = new ButtonBuilder()
+        const scissor = new MessageButton()
             .setEmoji("✂️")
             .setLabel('\u200b')
             .setStyle("Primary")
             .setCustomId("s")
-        const paper = new ButtonBuilder()
+        const paper = new MessageButton()
             .setEmoji("📜")
             .setLabel('\u200b')
             .setStyle("Primary")
             .setCustomId("p")
-        const rock = new ButtonBuilder()
+        const rock = new MessageButton()
             .setEmoji("🪨")
             .setLabel('\u200b')
             .setStyle("Primary")
             .setCustomId("r")
 
-        const options = {content: "Rock Paper Scissors",components: [new ActionRowBuilder().addComponents([scissor,paper,rock])]}
+        const options = {content: "Rock Paper Scissors",components: [new MessageActionRow().addComponents([scissor,paper,rock])]}
         this.interaction.reply(options)
         const msg = await this.interaction.fetchReply()
         const collector = msg.createMessageComponentCollector({filter: f => f.user.id == this.player1.id || f.user.id == this.player2.id,componentType: ComponentType.Button, time: 600_000} )
