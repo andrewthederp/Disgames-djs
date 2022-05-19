@@ -1,5 +1,5 @@
 const {$fetch} = require("ohmyfetch")
-const { EmbedBuilder, ButtonBuilder, TextInputBuilder,ActionRowBuilder,ModalBuilder, TextInputStyle, InteractionCollector} = require("discord.js")
+const { MessageEmbed, MessageButton, TextInputBuilder,MessageActionRow,Modal, TextInputStyle, InteractionCollector} = require("discord.js")
 
 module.exports = class MadLibs {
     constructor(interaction,min,max) {
@@ -11,15 +11,15 @@ module.exports = class MadLibs {
         const {title, blanks, value} = await $fetch(this.url,{ parseResponse: JSON.parse })
         const answers = []
         let i = 0
-        const button = new ButtonBuilder()
+        const button = new MessageButton()
         .setLabel("Play")
         .setStyle("Primary")
         .setCustomId("btuon")
-        const stop = new ButtonBuilder()
+        const stop = new MessageButton()
         .setLabel("STOP")
         .setStyle("Danger")
         .setCustomId("stop")
-        this.interaction.reply({ content: "Click the button below to get the 1st question", components: [new ActionRowBuilder().addComponents([button, stop])]})
+        this.interaction.reply({ content: "Click the button below to get the 1st question", components: [new MessageActionRow().addComponents([button, stop])]})
         const collector =(await this.interaction.fetchReply()).createMessageComponentCollector({ time: 600_000 })
         collector.on("collect",async (m) => {
             if(m.user.id == this.interaction.user.id){
@@ -36,9 +36,9 @@ module.exports = class MadLibs {
                     .setLabel(`Enter ${ana} ${question}`)
                     .setStyle(TextInputStyle.Short)
                     .setCustomId("answer")
-                    const act  = new ActionRowBuilder()
+                    const act  = new MessageActionRow()
                     .addComponents([text])
-                    const Modal = new ModalBuilder()
+                    const Modal = new Modal()
                     .setTitle(title)
                     .setCustomId("madlibs")
                     .addComponents([act])
@@ -51,11 +51,11 @@ module.exports = class MadLibs {
                                 const c = j.fields.getTextInputValue("answer")
                                 if(c) answers.push(c)
                                 i++
-                                const options = { content: `Click the button below to get the ${i + 1}${i + 1 == 2 ? "nd" : i + 1 == 3 ? "rd" : "th"} question`, components: [new ActionRowBuilder().addComponents([button,stop])]}
+                                const options = { content: `Click the button below to get the ${i + 1}${i + 1 == 2 ? "nd" : i + 1 == 3 ? "rd" : "th"} question`, components: [new MessageActionRow().addComponents([button,stop])]}
 
                                 if(blanks.length == i) {
                                     options.content = "Click the button to see your result"
-                                    options.components = [new ActionRowBuilder().addComponents([button.setLabel("Result")])]}
+                                    options.components = [new MessageActionRow().addComponents([button.setLabel("Result")])]}
                                 j.update(options)
                             }
                         })
@@ -67,7 +67,7 @@ module.exports = class MadLibs {
                         str += value[p]
                         if(answers[p]) str += answers[p]
                     }
-                    const embed = new EmbedBuilder()
+                    const embed = new MessageEmbed()
                     .setTitle(title)
                     .setDescription(str)
                     .setColor(0x5865F2)
