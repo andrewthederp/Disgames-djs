@@ -1,4 +1,4 @@
-const { EmbedBuilder, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle,ButtonBuilder, InteractionCollector, ComponentType} = require("discord.js")
+const { MessageEmbed, Modal, ActionRowBuilder, TextInputComponent, TextInputStyle,MessageButton, InteractionCollector, ComponentType} = require("discord.js")
 
 
 module.exports = class Checkers{
@@ -142,43 +142,43 @@ module.exports = class Checkers{
 	}
 
 	async start(){
-		const input = new TextInputBuilder()
+		const input = new TextInputComponent()
 		.setStyle(TextInputStyle.Short)
 		.setLabel("Enter a coordinate")
 		.setCustomId("move")
 		.setMinLength(2)
 		.setMaxLength(2)
-		const modal = new ModalBuilder()
+		const modal = new Modal()
 		.setCustomId("Checkers")
 		.setTitle("Checkers")
 		const action = new ActionRowBuilder().addComponents([input])
 		modal.addComponents([action])
-		const up_left = new ButtonBuilder()
+		const up_left = new MessageButton()
 			.setLabel("up left")
 			.setCustomId("ul")
 			.setStyle("Primary")
-		const up_right = new ButtonBuilder()
+		const up_right = new MessageButton()
 			.setLabel("up right")
 			.setCustomId("ur")
 			.setStyle("Primary")
-		const down_left = new ButtonBuilder()
+		const down_left = new MessageButton()
 			.setLabel("down left")
 			.setCustomId("dl")
 			.setStyle("Primary")
-		const down_right = new ButtonBuilder()
+		const down_right = new MessageButton()
 			.setLabel("down right")
 			.setCustomId("dr")
 			.setStyle("Primary")
-    	const moves = new ButtonBuilder()
+    	const moves = new MessageButton()
 	        .setLabel("moves")
 	        .setStyle("Success")
 	        .setCustomId("moves")
-    	const stop = new ButtonBuilder()
+    	const stop = new MessageButton()
 	        .setLabel("STOP")
 	        .setStyle("Danger")
 	        .setCustomId("stop")
 
-		const Embed = new EmbedBuilder()
+		const Embed = new MessageEmbed()
 			.setTitle("Checkers")
 			.setDescription(`Turn: ${this.turns[this.turn].toString()} (${this.colors[this.turn]})\n\n${this.format_board(this.board)}`)
 			.setColor(0x5865F2)
@@ -193,7 +193,7 @@ module.exports = class Checkers{
 		const collector = msg.createMessageComponentCollector({ filter: m => m.user.id == this.author.id || m.user.id == this.member.id })
 		collector.on('collect', async m => {
 			if(m.customId=='stop'){
-				const Embed = new EmbedBuilder()
+				const Embed = new MessageEmbed()
 					.setDescription(`Game ended by: ${this.turns[this.turn].toString()} (${this.colors[this.turn]})\n\n${this.format_board(this.board)}`)
 					.setColor(0x5865F2)
 				m.update({ embeds:[Embed], components:[] })
@@ -286,7 +286,7 @@ module.exports = class Checkers{
 							}
 						}
 						if(this.has_won()){
-							const Embed = new EmbedBuilder()
+							const Embed = new MessageEmbed()
 								.setTitle("Checkers")
 								.setDescription(`Winner: ${this.turns[this.other_turn].toString()} (${this.colors[this.other_turn]})\n\n${this.format_board(this.board)}`)
 								.setColor(0x5865F2)
@@ -295,7 +295,7 @@ module.exports = class Checkers{
 							input.stop()
 							collector.stop()
 						} else {
-							const Embed = new EmbedBuilder()
+							const Embed = new MessageEmbed()
 								.setTitle("Checkers")
 								.setDescription(`Turn: ${this.turns[this.turn].toString()} (${this.colors[this.turn]})\n\n${this.format_board(this.board)}`)
 								.setColor(0x5865F2)
