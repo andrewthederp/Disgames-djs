@@ -19,7 +19,7 @@
   "dependencies": {
     "aki-api": "^6.0.8",
     "chess.js": "^0.13.2",
-    "discord.js": "^14.0.0-dev.1651493371-4ba0f56",
+    "discord.js": "^13.7.0",
     "ohmyfetch": "^0.4.16"
   }
 }
