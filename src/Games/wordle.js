@@ -63,7 +63,7 @@ module.exports = class Wordle{
 
     make_embed(){
         let string = ''
-        const Embed = new EmbedBuilder()
+        const Embed = new MessageEmbed()
         .setTitle('Wordle!')
         .setColor(0x5865F2)
         for(let guess in this.guesses){
@@ -78,7 +78,7 @@ module.exports = class Wordle{
     }
 
     async start(){
-        const Modal = new ModalBuilder()
+        const Modal = new Modal()
         .setCustomId("worlde")
         .setTitle("Worlde")
         const text = new TextInputBuilder()
@@ -87,21 +87,21 @@ module.exports = class Wordle{
         .setMinLength(5)
         .setLabel(`Your guess`)
         .setCustomId(`guess`)
-        const act = new ActionRowBuilder().addComponents([text]);
+        const act = new MessageActionRow().addComponents([text]);
         Modal.addComponents([act])
 
-        const button = new ButtonBuilder()
+        const button = new MessageButton()
         .setLabel("click to guess")
         .setStyle("Primary")
         .setCustomId("click")
 
-        const stop = new ButtonBuilder()
+        const stop = new MessageButton()
         .setLabel("STOP")
         .setStyle("Danger")
         .setCustomId("stop")
 
         const Embed = this.make_embed()
-        const row = [new ActionRowBuilder().addComponents([button, stop])]
+        const row = [new MessageActionRow().addComponents([button, stop])]
         await this.interaction.reply({embeds: [Embed],components: row})
 
         const msg = await this.interaction.fetchReply()
