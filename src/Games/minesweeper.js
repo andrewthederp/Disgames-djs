@@ -1,4 +1,4 @@
-const {MessageEmbed, MessageButton, Modal, TextInputBuilder, MessageActionRow, TextInputStyle, InteractionCollector} = require("discord.js")
+const {MessageEmbed, MessageButton, Modal, TextInputComponent, MessageActionRow, TextInputStyle, InteractionCollector} = require("discord.js")
 
 module.exports = class Minesweeper{
 	constructor(interaction,chance){
@@ -168,7 +168,7 @@ module.exports = class Minesweeper{
 		// console.log(board)
 		let vboard = b[1]
 
-		const input = new TextInputBuilder()
+		const input = new TextInputComponent()
 		.setStyle(TextInputStyle.Short)
 		.setLabel("Enter a coordinate")
 		.setCustomId("move")
