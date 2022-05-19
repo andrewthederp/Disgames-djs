@@ -1,5 +1,5 @@
 const { Aki } = require("aki-api")
-const {ButtonBuilder,EmbedBuilder,ActionRowBuilder} = require("discord.js")
+const {MessageButton,MessageEmbed,MessageActionRow} = require("discord.js")
 module.exports = class Akinator{
     constructor(interaction,options){
         if(!interaction) throw new TypeError("Interaction missing")
@@ -27,13 +27,13 @@ module.exports = class Akinator{
 
     async game(aki, int,i){
         i++
-        const Embed = new EmbedBuilder().setTitle(`Question ${i}`).setDescription(aki.question).setColor(0x7289da).setFooter({text:`Progress: ${aki.progress}`})
+        const Embed = new MessageEmbed().setTitle(`Question ${i}`).setDescription(aki.question).setColor(0x7289da).setFooter({text:`Progress: ${aki.progress}`})
         const buttons = []
         aki.answers.forEach(answer => {
             const answers = {"yes": "0","no": "1", "idk": "2","don't know": "2", "probably": "3", "probably not": "ik"};
-            buttons.push(new ButtonBuilder().setLabel(answer).setStyle("Primary").setCustomId(answers[answer.toLowerCase()]))
+            buttons.push(new MessageButton().setLabel(answer).setStyle("Primary").setCustomId(answers[answer.toLowerCase()]))
         })
-        const actionRow = new ActionRowBuilder().addComponents(buttons)
+        const actionRow = new MessageActionRow().addComponents(buttons)
         int.editReply({embeds: [Embed],components: [actionRow]})
         const message = await int.fetchReply()
         const collector = message.createMessageComponentCollector(m => m.user.id === int.user.id,{time: 60000})
