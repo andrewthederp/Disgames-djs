@@ -17,7 +17,6 @@ module.exports = class Wordle{
         } else {
             this.word = word
         }
-        console.log(this.word)
         this.guesses = []
         this.tries = 0
     }
