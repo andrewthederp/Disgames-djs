@@ -17,7 +17,7 @@ module.exports = class TicTacToe{
 		}
 		this.board = board
 		this.turn = 'x'
-		this.conversion = {'x':'Danger', 'o':'Success','':'Secondary'}
+		this.conversion = {'x':'DANGER', 'o':'SUCCESS','':'SECONDARY'}
 		this.author = this.interaction.user
 		this.member = opponent
 		this.turns = {'x':this.author, 'o':this.member}

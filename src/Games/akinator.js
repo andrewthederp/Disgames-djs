@@ -31,7 +31,7 @@ module.exports = class Akinator{
         const buttons = []
         aki.answers.forEach(answer => {
             const answers = {"yes": "0","no": "1", "idk": "2","don't know": "2", "probably": "3", "probably not": "ik"};
-            buttons.push(new MessageButton().setLabel(answer).setStyle("Primary").setCustomId(answers[answer.toLowerCase()]))
+            buttons.push(new MessageButton().setLabel(answer).setStyle("PRIMARY").setCustomId(answers[answer.toLowerCase()]))
         })
         const actionRow = new MessageActionRow().addComponents(buttons)
         int.editReply({embeds: [Embed],components: [actionRow]})

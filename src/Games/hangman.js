@@ -99,12 +99,12 @@ module.exports = class Hangman{
 
 		const button = new MessageButton()
 		.setLabel("click to guess")
-		.setStyle("Primary")
+		.setStyle("PRIMARY")
 		.setCustomId("click")
 
 		const stop = new MessageButton()
 		.setLabel("STOP")
-		.setStyle("Danger")
+		.setStyle("DANGER")
 		.setCustomId("stop")
 
 		let Embed = this.make_embed()

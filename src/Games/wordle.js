@@ -92,12 +92,12 @@ module.exports = class Wordle{
 
         const button = new MessageButton()
         .setLabel("click to guess")
-        .setStyle("Primary")
+        .setStyle("PRIMARY")
         .setCustomId("click")
 
         const stop = new MessageButton()
         .setLabel("STOP")
-        .setStyle("Danger")
+        .setStyle("DANGER")
         .setCustomId("stop")
 
         const Embed = this.make_embed()

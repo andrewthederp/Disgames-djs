@@ -68,15 +68,15 @@ module.exports = class Chess1{
         const color = {'w':'White','b':'Black'}
         const button = new MessageActionRow()
                        .setLabel("CLICK HERE")
-                       .setStyle("Primary")
+                       .setStyle("PRIMARY")
                        .setCustomId("click")
         const stop = new MessageActionRow()
                         .setLabel("STOP")
-                        .setStyle("Danger")
+                        .setStyle("DANGER")
                         .setCustomId("stop")
         const possible = new MessageActionRow()
                         .setLabel("POSSIBLE MOVES")
-                        .setStyle("Secondary")
+                        .setStyle("SECONDARY")
                         .setCustomId("possible")
         const options = {content: `${color[chess.turn()]}'s turn`,embeds: [Embed],components: [new ActionRowBuilder().addComponents([button,stop,possible])]}
         await this.interaction.reply(options)

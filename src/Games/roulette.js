@@ -14,7 +14,7 @@ module.exports = class RussianRoulette{
             .setDescription(`${turn.username} is the gunner.`)
         const Button = new MessageButton()
             .setLabel("Pull the trigger!")
-            .setStyle("Danger")
+            .setStyle("DANGER")
             .setCustomId("pull")
         this.interaction.reply({embeds:[Embed],components:[new MessageActionRow().addComponents([Button])]})
         const msg = await this.interaction.fetchReply()

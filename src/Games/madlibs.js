@@ -13,11 +13,11 @@ module.exports = class MadLibs {
         let i = 0
         const button = new MessageButton()
         .setLabel("Play")
-        .setStyle("Primary")
+        .setStyle("PRIMARY")
         .setCustomId("btuon")
         const stop = new MessageButton()
         .setLabel("STOP")
-        .setStyle("Danger")
+        .setStyle("DANGER")
         .setCustomId("stop")
         this.interaction.reply({ content: "Click the button below to get the 1st question", components: [new MessageActionRow().addComponents([button, stop])]})
         const collector =(await this.interaction.fetchReply()).createMessageComponentCollector({ time: 600_000 })

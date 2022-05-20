@@ -87,7 +87,7 @@ module.exports = class Sokoban{
 	create_disabled_button(){
     	const btn = new MessageButton()
 		.setLabel("\u200b")
-        .setStyle("Secondary")
+        .setStyle("SECONDARY")
         .setCustomId(JSON.stringify(Math.floor(Math.random()*100000)))
         .setDisabled(true)
         return btn
@@ -106,33 +106,33 @@ module.exports = class Sokoban{
 			.setFooter({text: "Use the arrow keys to move"})
 
     	const up_btn = new MessageButton()
-        .setStyle("Primary")
+        .setStyle("PRIMARY")
         .setCustomId('u')
         .setEmoji('⬆')
 		const btns1 = [this.create_disabled_button(), up_btn, this.create_disabled_button()]
 
     	const left_btn = new MessageButton()
-        .setStyle("Primary")
+        .setStyle("PRIMARY")
         .setCustomId('l')
         .setEmoji('⬅')
     	const reload = new MessageButton()
-        .setStyle("Primary")
+        .setStyle("PRIMARY")
         .setCustomId("reload")
         .setEmoji('🔄')
     	const right_btn = new MessageButton()
-        .setStyle("Primary")
+        .setStyle("PRIMARY")
         .setCustomId('r')
         .setEmoji('➡')
         const btns2 = [left_btn, reload, right_btn]
 
         const down_btn = new MessageButton()
-        .setStyle("Primary")
+        .setStyle("PRIMARY")
         .setCustomId('d')
         .setEmoji('⬇')
         const btns3 = [this.create_disabled_button(), down_btn, this.create_disabled_button()]
 
     	const stop = new MessageButton()
-        .setStyle("Danger")
+        .setStyle("DANGER")
         .setCustomId("stop")
         .setEmoji('⏹')
 	    const btns4 = [stop]
