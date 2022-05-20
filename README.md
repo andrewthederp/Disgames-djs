@@ -1,7 +1,4 @@
-# Disgames.js
-Disgames is an easy-to-use fully customizable npm package made to allow you to easily add games to your discord.js bot!
-
-NOTE: This package requires discord.js v14. To install v14, run `npm i discord.js@dev` or `yarn add discord.js@dev`
+disgames is an easy-to-use fully customizable npm package made to allow you to easily add games to your discord.js bot!
 
 ---
 
@@ -12,6 +9,7 @@ NOTE: This package requires discord.js v14. To install v14, run `npm i discord.j
   - [Installation](#installation)
   - [Example](#example)
   - [Documentation](#documentation)
+  - [Discord](#discord)
 
 ## Installation
 ```sh
@@ -21,7 +19,7 @@ npm i disgames-js
 To install the development version, you need [git](https://git-scm.com/downloads) installed. After installing it, run
 
 ```shell
-npm i andrewthederp/Disgames-djs
+npm i npm i andrewthederp/Disgames-djs
 ```
 
 ## Example 
@@ -82,3 +80,48 @@ The Minesweeper constructor takes two parameters. `Interaction` (required) and `
 ```js
 new disgames.Minesweeper(interaction,.17).start()
 ```
+
+### RussianRoulette
+The RussianRoulette constructor takes two parameters. `Interaction` (required) and `opponent` (required).
+
+```js
+new disgames.RussianRoulette(interaction,await client.users.fetch(interaction.options.get("opponent",true).value).start()
+```
+
+### RPS
+The RPS constructor takes two parameters. `Interaction` (required) and `opponent` (default: `undefined`). If no opponent is passed then the player plays against the bot.
+
+```js
+new disgames.RPS(interaction,await client.users.fetch(interaction.options.get("opponent",true).value).start()
+```
+
+### Snake
+The Snake constructor takes one parameter. `Interaction` (required).
+
+```js
+new disgames.Snake(interaction).start()
+```
+
+### Sokoban
+The Sokoban constructor takes two parameters. `Interaction` (required) and `options` (default: `{player:'😳','playerOnTask':'😳',task:'❎',box:'🟫',boxOnTask:'✅'}`). `options` will be used to format the board.
+
+```js
+new disgames.Sokoban(interaction).start()
+```
+
+### TicTacToe
+The TicTacToe constructor takes two parameters. `Interaction` (required) and `opponent` (required).
+
+```js
+new disgames.TicTacToe(interaction, await client.users.fetch(interaction.options.get("opponent",true).value).start()
+```
+
+### Wordle
+The Wordle constructor takes two parameters. `Interaction` (required) and `player` (required) and `word` (default:a random word from words.txt).
+
+```js
+new disgames.Wordle(interaction, interaction.user, 'hello').start()
+```
+
+## Discord
+[Need help? join our discord server!](https://discord.gg/muujuynu3C)
