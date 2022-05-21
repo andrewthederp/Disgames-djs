@@ -27,7 +27,7 @@ npm i npm i andrewthederp/Disgames-djs
 const Discord = require("discord.js")
 const disgames = require("disgames-js")
 
-const client = new Discord.Client({ intents: ['Guilds', 'GuildMessages', 'MessageContent'] })
+const client = new Discord.Client({ intents: ['GUIlDS'] })
 
 client.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return
@@ -42,7 +42,10 @@ client.login('token')
 The Akinator constructor takes two parameters. `Interaction` (required) and `options` (default:`{childMode: false,region: 'people'}`). `options` is expected to be an `Object` containing `childMode` (default:`false`) and `region` (default:`'people'`) `region` may be any of "people"/"animals"/"objects".
 
 ```js
-new disgames.Akinator(interaction,{false,'region'}).start()
+new disgames.Akinator(interaction,{
+  childMode: false,
+  region: 'region'
+}).start()
 ```
 
 ### Checkers
@@ -71,7 +74,7 @@ new disgames.Hangman(interaction,{min:3, max:7, word:undefined}).start()
 The Madlibs constructor takes three parameters. `Interaction` (required) and `min` (default:`5`) and `max` (default:`25`).
 
 ```js
-new disgames.Madlibs(interaction,5,25).start()
+new disgames.Madlibs(interaction,{min: 5,max: 25}).start()
 ```
 
 ### Minesweeper

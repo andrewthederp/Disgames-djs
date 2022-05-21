@@ -2,7 +2,7 @@ const {$fetch} = require("ohmyfetch")
 const { MessageEmbed, MessageButton, TextInputComponent,MessageActionRow,Modal, TextInputStyle, InteractionCollector} = require("discord.js")
 
 module.exports = class MadLibs {
-    constructor(interaction,min,max) {
+    constructor(interaction,{min,max}) {
         this.interaction = interaction
         this.url = `http://madlibz.herokuapp.com/api/random?minlength=${min||5}&maxlength=${max||25}`
     }
