@@ -27,7 +27,7 @@ export class Akinator{
     private game(aki: Aki,int: Interaction,i: number): Promise<void>;
 }
 export class Minesweeper{
-    constructor(interaction: Interaction);
+    constructor(interaction: Interaction,chance: number);
     private format_board(board: string[]): string[]
     private make_board(): string[][];
     private get_neighbours(x: string,y: string): string[]
