@@ -1,4 +1,4 @@
-import {Interaction,User,ActionRowBuilder, EmbedBuilder, ButtonBuilder} from "discord.js"
+import {Interaction,User,MessageActionRow, MessageEmbed, MessageButton} from "discord.js"
 import {Chess as Chess1} from "chess.js"
 import {Aki as Aki} from "aki-api"
 interface AkiOptions{
@@ -8,7 +8,7 @@ interface AkiOptions{
 type xy = string | number
 export class RockPaperScissors{
     constructor(interaction: Interaction, opponent?: User);
-    private make_buttons(): ActionRowBuilder[];
+    private make_buttons(): MessageActionRow[];
     private has_won(): boolean;
     start(): Promise<void>;
 }
@@ -18,7 +18,7 @@ export class TicTacToe{
 }
 export class Chess{
     constructor(interaction: Interaction,opponent: User)
-    private createBoard(chess: typeof Chess1): EmbedBuilder;
+    private createBoard(chess: typeof Chess1): MessageEmbed;
     start(): Promise<void>;
 }
 export class Akinator{
@@ -56,7 +56,7 @@ export class Snake{
     constructor(interaction: Interaction)
     private move(self: Snake): boolean
     private format_board(board: string[],snake_head: number): string
-    private create_disabled_button(): ButtonBuilder
+    private create_disabled_button(): MessageButton
     start(): Promise<void>;
 }
 export class Roulette{
@@ -79,7 +79,7 @@ export class Hangman{
         word?: string
     })
     private make_hangman(): string
-    private make_embed(title: string): EmbedBuilder
+    private make_embed(title: string): MessageEmbed
     start(): Promise<void>
 }
 export class Wordle{
@@ -87,6 +87,6 @@ export class Wordle{
     private remove(wrd: string,letter: string): string
     private filter_(guess: string): string
     private win(arr: string[]): boolean
-    private make_embed(): EmbedBuilder
+    private make_embed(): MessageEmbed
     start(): Promise<void>
 }

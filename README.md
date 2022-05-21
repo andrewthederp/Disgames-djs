@@ -88,14 +88,14 @@ new disgames.Minesweeper(interaction,.17).start()
 The RussianRoulette constructor takes two parameters. `Interaction` (required) and `opponent` (required).
 
 ```js
-new disgames.RussianRoulette(interaction,await client.users.fetch(interaction.options.get("opponent",true).value).start()
+new disgames.Roulette(interaction,await client.users.fetch(interaction.options.get("opponent",true).value).start()
 ```
 
 ### RPS
 The RPS constructor takes two parameters. `Interaction` (required) and `opponent` (default: `undefined`). If no opponent is passed then the player plays against the bot.
 
 ```js
-new disgames.RPS(interaction,await client.users.fetch(interaction.options.get("opponent",true).value).start()
+new disgames.RockPaperScissors(interaction,await client.users.fetch(interaction.options.get("opponent",true).value).start()
 ```
 
 ### Snake
