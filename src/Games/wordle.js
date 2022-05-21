@@ -5,13 +5,11 @@ path = require("path")
 words = fs.readFileSync(path.resolve(__dirname,"words.txt"),{encoding:'utf8', flag:'r'}).split("\n").filter(w => w.length == 5 && !numbers.test(w) && !symbols.test(w)).map(w => w.replace("\r","")).map(w => w.toUpperCase())
 const { MessageEmbed, Modal, MessageActionRow, TextInputComponent, TextInputStyle, MessageButton, InteractionCollector, ComponentType} = require("discord.js")
 
-
-
 module.exports = class Wordle{
-    constructor(interaction, player, word){
-        if(!interaction || !player) throw new TypeError("Interaction or player missing")
+    constructor(interaction, word){
+        if(!interaction ) throw new TypeError("Interaction or player missing")
         this.interaction = interaction
-        this.player = player
+        this.player = interaction.user
         if(!word){
             this.word = words[Math.floor(Math.random()*words.length)]
         } else {

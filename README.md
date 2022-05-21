@@ -120,10 +120,10 @@ new disgames.TicTacToe(interaction, await client.users.fetch(interaction.options
 ```
 
 ### Wordle
-The Wordle constructor takes two parameters. `Interaction` (required) and `player` (required) and `word` (default:a random word from words.txt).
+The Wordle constructor takes two parameters. `Interaction` (required) and `word` (default:a random word from words.txt).
 
 ```js
-new disgames.Wordle(interaction, interaction.user, 'hello').start()
+new disgames.Wordle(interaction,'hello').start()
 ```
 
 ## Discord
