@@ -27,7 +27,7 @@ export class Akinator{
     private game(aki: Aki,int: Interaction,i: number): Promise<void>;
 }
 export class Minesweeper{
-    constructor(interaction: Interaction,chance: number);
+    constructor(interaction: Interaction,chance?: number);
     private format_board(board: string[]): string[]
     private make_board(): string[][];
     private get_neighbours(x: string,y: string): string[]
@@ -39,7 +39,7 @@ export class Minesweeper{
     start(): Promise<void>;
 }
 export class Madlibs{
-    constructor(interaction: Interaction,options: {min: number,max: number});
+    constructor(interaction: Interaction,options?: {min: number,max: number});
     start(): Promise<void>;
 }
 export class Checkers{
@@ -73,9 +73,9 @@ export class Sokoban{
     start(): Promise<void>
 }
 export class Hangman{
-    constructor(interaction: Interaction,options:{
-        min?: number
-        max?: number
+    constructor(interaction: Interaction,options?:{
+        min: number
+        max: number
         word?: string
     })
     private make_hangman(): string
@@ -83,7 +83,7 @@ export class Hangman{
     start(): Promise<void>
 }
 export class Wordle{
-    constructor(interaction: Interaction,word: string)
+    constructor(interaction: Interaction,word?: string)
     private remove(wrd: string,letter: string): string
     private filter_(guess: string): string
     private win(arr: string[]): boolean
