@@ -39,7 +39,7 @@ export class Minesweeper{
     start(): Promise<void>;
 }
 export class Madlibs{
-    constructor(interaction: Interaction,min: number,max: number);
+    constructor(interaction: Interaction,options: {min: number,max: number});
     start(): Promise<void>;
 }
 export class Checkers{
