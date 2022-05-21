@@ -42,7 +42,10 @@ client.login('token')
 The Akinator constructor takes two parameters. `Interaction` (required) and `options` (default:`{childMode: false,region: 'people'}`). `options` is expected to be an `Object` containing `childMode` (default:`false`) and `region` (default:`'people'`) `region` may be any of "people"/"animals"/"objects".
 
 ```js
-new Disgames.Akinator(interaction,{false,'region'}).start()
+new Disgames.Akinator(interaction,{
+  childMode: false,
+  region: 'region'
+  }).start()
 ```
 
 ### Checkers
