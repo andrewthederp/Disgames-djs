@@ -1,6 +1,6 @@
 {
   "name": "disgames-js",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A useful package which allows you to add minigames to your discord.js bot easily",
   "main": "src/index.js",
   "scripts": {
