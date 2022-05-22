@@ -55,7 +55,7 @@ module.exports = class Chess1{
         //     await this.game(chess,gameData)
         // }
         // async game(chess,gameData){
-        const Modal = new Modal()
+        const modal = new Modal()
         .setCustomId("chess")
         .setTitle("Chess")
         const text = new TextInputComponent()
@@ -63,7 +63,7 @@ module.exports = class Chess1{
         .setLabel(`Your turn`)
         .setCustomId(`move`)
         const act = new MessageActionRow().addComponents([text]);
-        Modal.addComponents([act])
+        modal.addComponents([act])
         let Embed = await this.createBoard(chess)
         const color = {'w':'White','b':'Black'}
         const button = new MessageButton()
@@ -98,7 +98,7 @@ module.exports = class Chess1{
             }
             if(btn.customId == "click"){
                 if(btn.user.id == this.turns[chess.turn()].id){
-                    btn.showModal(Modal).then(async() =>{
+                    btn.showModal(modal).then(async() =>{
                         const input = new InteractionCollector(this.interaction.client,{time: 60_000})
                             input.on('collect', async i => {
                                 if(!i.fields){
