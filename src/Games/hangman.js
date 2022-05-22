@@ -7,8 +7,8 @@ const symbols = new RegExp(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)
 module.exports = class Hangman{
 	constructor(interaction,options){
 		if(!interaction) throw new TypeError("Interaction missing")
-		const min = options.min
-		const max = options.max
+		let {min,max} = options
+
 		const word = options.word
 		if(!min) min = 3
 		if(!max) max = 7
@@ -64,7 +64,7 @@ module.exports = class Hangman{
 					{name:"Guesses",value:`[${templst.map(i=>`:regional_indicator_${i}:`).join(' ')}]`}
 				]
 			)
-			.setColor("Red")
+			.setColor("RED")
 		}else if(title == 'You won!'){
 			Embed.setFields(
 				[
@@ -72,7 +72,7 @@ module.exports = class Hangman{
 					{name:"Guesses",value:`[${templst.map(i=>`:regional_indicator_${i}:`).join(' ')}]`}
 				]
 			)
-			.setColor("Green")
+			.setColor("GREEN")
 		} else if(title=='Game ended'){
 			Embed.setFields(
 				[
@@ -80,22 +80,22 @@ module.exports = class Hangman{
 				{name:"Guesses",value:`[${templst.map(i=>`:regional_indicator_${i}:`).join(' ')}]`}
 				]
 			)
-			.setColor("Red")
+			.setColor("RED")
 		}
 		return Embed
 	}
 
 
 	async start(){
-		const Modal = new Modal()
+		const modal = new Modal()
 		.setCustomId("hangman")
 		.setTitle("Hangman")
 		const text = new TextInputComponent()
-		.setStyle(TextInputStyle.Short)
+		.setStyle("SHORT")
 		.setLabel(`Your guess`)
 		.setCustomId(`guess`)
 		const act = new MessageActionRow().addComponents([text]);
-		Modal.addComponents([act])
+		modal.addComponents([act])
 
 		const button = new MessageButton()
 		.setLabel("click to guess")
@@ -112,7 +112,7 @@ module.exports = class Hangman{
 		await this.interaction.reply({embeds: [Embed],components: row})
 
 		const msg = await this.interaction.fetchReply()
-		const collector = msg.createMessageComponentCollector({componentType: ComponentType.Button, time: 600_000} )
+		const collector = msg.createMessageComponentCollector({ time: 600_000} )
 
 		collector.on("collect",async btn => {
 			if(btn.user.id == this.interaction.user.id){
@@ -122,7 +122,7 @@ module.exports = class Hangman{
 					btn.update({ content:'Hangman ended', embeds: [Embed], components:[] })
 					return
 				} else if(btn.customId=='click'){
-					btn.showModal(Modal).then(async() =>{
+					btn.showModal(modal).then(async() =>{
 						const input = new InteractionCollector(this.interaction.client,{filter: f => f.user.id == this.interaction.user.id})
 						input.on('collect', async b => {
 							if(!b.fields){
@@ -133,14 +133,14 @@ module.exports = class Hangman{
 									if(guess.length>1){
 										if(guess==this.word){
 											Embed = this.make_embed('You won!')
-											b.update({ content:'', embeds: [Embed], components:[] })
+											b.update({ embeds: [Embed], components:[] })
 											collector.stop()
 											input.stop()
 										} else {
 											this.fails += 1
 											if(this.fails==6) {
 												Embed = this.make_embed('You lost!')
-												b.update({ content:'', embeds: [Embed], components:[] })
+												b.update({  embeds: [Embed], components:[] })
 												collector.stop()
 												input.stop()
 											}
@@ -158,7 +158,7 @@ module.exports = class Hangman{
 											this.fails += 1
 											if(this.fails==6) {
 												Embed = this.make_embed('You lost!')
-												b.update({ content:'', embeds: [Embed], components:[] })
+												b.update({ embeds: [Embed], components:[] })
 												collector.stop()
 												input.stop()
 											}else{
@@ -169,11 +169,11 @@ module.exports = class Hangman{
 											if(this.revealed_word.includes("🟦")){
 												this.guesses.push(guess)
 												Embed = this.make_embed('Hangman')
-												b.update({ content:'', embeds: [Embed]})
+												b.update({  embeds: [Embed]})
 												input.stop()
 											} else {
 												Embed = this.make_embed('You won!')
-												b.update({ content:'', embeds: [Embed], components:[] })
+												b.update({ embeds: [Embed], components:[] })
 												collector.stop()
 												input.stop()
 											}

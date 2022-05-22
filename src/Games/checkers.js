@@ -1,4 +1,4 @@
-const { MessageEmbed, Modal, ActionRowBuilder, TextInputComponent, TextInputStyle,MessageButton, InteractionCollector, ComponentType} = require("discord.js")
+const { MessageEmbed, Modal, MessageActionRow, TextInputComponent, TextInputStyle,MessageButton, InteractionCollector, ComponentType} = require("discord.js")
 
 
 module.exports = class Checkers{
@@ -143,7 +143,7 @@ module.exports = class Checkers{
 
 	async start(){
 		const input = new TextInputComponent()
-		.setStyle(TextInputStyle.Short)
+		.setStyle("SHORT")
 		.setLabel("Enter a coordinate")
 		.setCustomId("move")
 		.setMinLength(2)
@@ -151,22 +151,22 @@ module.exports = class Checkers{
 		const modal = new Modal()
 		.setCustomId("Checkers")
 		.setTitle("Checkers")
-		const action = new ActionRowBuilder().addComponents([input])
+		const action = new MessageActionRow().addComponents([input])
 		modal.addComponents([action])
 		const up_left = new MessageButton()
-			.setLabel("up left")
+			.setEmoji("↖️")
 			.setCustomId("ul")
 			.setStyle("PRIMARY")
 		const up_right = new MessageButton()
-			.setLabel("up right")
+			.setEmoji("↗️")
 			.setCustomId("ur")
 			.setStyle("PRIMARY")
 		const down_left = new MessageButton()
-			.setLabel("down left")
+			.setEmoji("↙️")
 			.setCustomId("dl")
 			.setStyle("PRIMARY")
 		const down_right = new MessageButton()
-			.setLabel("down right")
+			.setEmoji("↘️")
 			.setCustomId("dr")
 			.setStyle("PRIMARY")
     	const moves = new MessageButton()
@@ -184,8 +184,8 @@ module.exports = class Checkers{
 			.setColor(0x5865F2)
 
 		const row = [
-		new ActionRowBuilder().addComponents([up_left, up_right, down_left, down_right, moves]),
-		new ActionRowBuilder().addComponents([stop])
+		new MessageActionRow().addComponents([up_left, up_right, down_left, down_right, moves]),
+		new MessageActionRow().addComponents([stop])
 		]
 		const options = {embeds: [Embed], components: row}
 		this.interaction.reply(options)
@@ -200,8 +200,6 @@ module.exports = class Checkers{
 				collector.stop()
 				return
 			} else if(m.customId=='moves'){
-				// await m.deferUpdate()
-				// console.log(this.moves().map(m => ` \`${m}\``).join(","))
 				await m.reply({content: `${this.moves().map(m => ` \`${m}\``).join(",")}`, ephemeral:true })
 			} else{
 				if(m.user.id == this.turns[this.turn].id){

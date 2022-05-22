@@ -47,7 +47,7 @@ module.exports = class RPS{
         const options = {content: "Rock Paper Scissors",components: [new MessageActionRow().addComponents([scissor,paper,rock])]}
         this.interaction.reply(options)
         const msg = await this.interaction.fetchReply()
-        const collector = msg.createMessageComponentCollector({filter: f => f.user.id == this.player1.id || f.user.id == this.player2.id,componentType: ComponentType.Button, time: 600_000} )
+        const collector = msg.createMessageComponentCollector({filter: f => f.user.id == this.player1.id || f.user.id == this.player2.id, time: 600_000} )
         collector.on("collect",async m => {
             if(this.plays[m.user.id]){
                 m.reply({content: "You already chose", ephemeral: true}) 

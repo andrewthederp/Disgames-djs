@@ -34,15 +34,15 @@ module.exports = class MadLibs {
                     const ana =  ["a","e","i","o","u"].includes(question[0]) ? "an" : "a"
                     const text = new TextInputComponent()
                     .setLabel(`Enter ${ana} ${question}`)
-                    .setStyle(TextInputStyle.Short)
+                    .setStyle("SHORT")
                     .setCustomId("answer")
                     const act  = new MessageActionRow()
                     .addComponents([text])
-                    const Modal = new Modal()
+                    const modal = new Modal()
                     .setTitle(title)
                     .setCustomId("madlibs")
                     .addComponents([act])
-                    m.showModal(Modal).then(() => {
+                    m.showModal(modal).then(() => {
                         const input = new InteractionCollector(this.interaction.client,h => h.user.id == this.interaction.user.id)
                         input.on("collect",(j) => {
                             if(!j.fields){
@@ -71,7 +71,7 @@ module.exports = class MadLibs {
                     .setTitle(title)
                     .setDescription(str)
                     .setColor(0x5865F2)
-                    m.update({ content: "", components: [], embeds: [embed]})
+                    m.update({ components: [], embeds: [embed] })
                 }
             } else {
                 m.reply({ content:"this is not your game", ephemeral:true })

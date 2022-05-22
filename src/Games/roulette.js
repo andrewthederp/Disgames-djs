@@ -22,7 +22,6 @@ module.exports = class RussianRoulette{
         input.on("collect",(inp) => {
             if(inp.user.id == turn.id){
             const random = Math.floor(Math.random()*6)
-            console.log(random)
             if(random !== 5){
                 if(i == 0) i = 1
                 else i = 0
@@ -31,7 +30,7 @@ module.exports = class RussianRoulette{
                 inp.update({ embeds: [Embed], components: [new MessageActionRow().addComponents([Button])] })
             }else{
                 Embed.setDescription(`${turn.username} **was** the gunner.\n\n**You died.**`)
-                .setColor("Red")
+                .setColor("RED")
                 inp.update({ embeds: [Embed], components: [] })
                 input.stop()
                 return turn.id

@@ -4,7 +4,7 @@ module.exports = class Sokoban{
 		this.interaction = interaction
 		this.options = this.parse_options(options)
 	}
-	parse_options(options){
+	parse_options(options = {}){
 		return {'p': options.player || '😳', 'tp': options.playerOnTask || '😳', 't': options.task || '❎', 'b': options.box || '🟫', 'bt': options.boxOnTask || '✅'}
 	}
     format_board(board){
@@ -141,7 +141,7 @@ module.exports = class Sokoban{
 
 		this.interaction.reply({ embeds: [Embed], components: rows})
 		const msg = await this.interaction.fetchReply()
-		const input = msg.createMessageComponentCollector({filter: m => m.user.id == this.interaction.user.id ,componentType: ComponentType.Button, time: 600_000} )
+		const input = msg.createMessageComponentCollector({filter: m => m.user.id == this.interaction.user.id, time: 600_000} )
 		input.on("collect", async (btn) => {
 			if(btn.customId=='reload'){
 				this.board = JSON.parse(JSON.stringify(this.board_copy))
@@ -151,14 +151,14 @@ module.exports = class Sokoban{
 				.setDescription(this.format_board(this.board))
 				.setColor("#0099ff")
 				.setFooter({text: "Use the arrow keys to move"})
-				btn.update({ content: '', embeds: [embed] })
+				btn.update({  embeds: [embed] })
 			} else if (btn.customId=='stop'){
 				const embed = new MessageEmbed()
 				.setTitle("Game ended")
 				.setDescription(this.format_board(this.board))
 				.setColor("#0099ff")
 				.setFooter({text: "Use the arrow keys to move"})
-				btn.update({ content: '', embeds: [embed] })
+				btn.update({  embeds: [embed] })
 				input.stop()
 			} else {
 				const direction = directions[btn.customId]
@@ -214,7 +214,7 @@ module.exports = class Sokoban{
 						.setDescription(this.format_board(this.board))
 						.setColor("#0099ff")
 						.setFooter({text: "Use the arrow keys to move"})
-						btn.update({ content: '', embeds: [embed] })
+						btn.update({  embeds: [embed] })
 					}
 				}
 			}

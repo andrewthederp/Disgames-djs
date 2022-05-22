@@ -165,15 +165,13 @@ module.exports = class Minesweeper{
 	async start(){
 		const b = this.make_board()
 		const board = b[0]
-		// console.log(board)
 		let vboard = b[1]
 
 		const input = new TextInputComponent()
-		.setStyle(TextInputStyle.Short)
+		.setStyle("SHORT")
 		.setLabel("Enter a coordinate")
 		.setCustomId("move")
 		.setMinLength(2)
-		// .setMaxLength(3)
 		const modal = new Modal()
 		.setCustomId("Minesweeper")
 		.setTitle("Minesweeper")
@@ -222,7 +220,6 @@ module.exports = class Minesweeper{
 							const inp = s.split(" ")
 							for(let coor in inp){
 								const xy = this.get_coors(inp[coor])
-								// console.log(xy)
 								if(!xy){
 									continue
 								}
@@ -235,7 +232,7 @@ module.exports = class Minesweeper{
 										Embed = new MessageEmbed()
 											.setTitle("You lost!")
 											.setDescription(`${this.format_board(this.reveal_all(vboard,board))}`)
-											.setColor("Red")
+											.setColor("RED")
 										const opt = {content:"You lost! :pensive:", embeds: [Embed],components:[]}
 										this.interaction.editReply(opt)
 										collector.stop()

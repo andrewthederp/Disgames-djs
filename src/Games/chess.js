@@ -2,7 +2,7 @@ let Chess = []
 ;(async()=>{
     Chess.push(await import("chess.js"))
 })()
-const { MessageEmbed, Modal, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType} = require("discord.js")
+const { MessageEmbed, Modal, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType, MessageButton} = require("discord.js")
 module.exports = class Chess1{
     constructor(interaction,opponent){
         this.interaction = interaction
@@ -17,7 +17,7 @@ module.exports = class Chess1{
         const fen = encodeURIComponent(chess.fen())
         const Embed = new MessageEmbed()
         .setTitle("Chess")
-        .setImage(`http://www.jinchess.com/chessboard/?p=${fen}`)
+        .setImage(`http://www.jinchess.com/chessboard/?p=${fen}&cm=o&ps=merida-flat&s=xl&dsc=%23B58863&lsc=%23F0D9B5`)
         .setColor(0x7289da)
         if(chess.game_over()){
             let value = undefined
@@ -59,7 +59,7 @@ module.exports = class Chess1{
         .setCustomId("chess")
         .setTitle("Chess")
         const text = new TextInputComponent()
-        .setStyle(TextInputStyle.Short)
+        .setStyle("SHORT")
         .setLabel(`Your turn`)
         .setCustomId(`move`)
         const act = new MessageActionRow().addComponents([text]);
@@ -82,7 +82,7 @@ module.exports = class Chess1{
         await this.interaction.reply(options)
         
         const msg = await this.interaction.fetchReply()
-        const collector = msg.createMessageComponentCollector({filter: f => f.user.id == this.member.id || f.user.id == this.author.id,componentType: ComponentType.Button, time: 600_000} )
+        const collector = msg.createMessageComponentCollector({filter: f => f.user.id == this.member.id || f.user.id == this.author.id, time: 600_000} )
 
         collector.on("collect",async btn => {
             if(btn.customId == "possible"){
@@ -93,7 +93,7 @@ module.exports = class Chess1{
                 stop.setDisabled(true)
                 possible.setDisabled(true)
                 const other_turn = chess.turn() == 'w' ? 'b' : 'w'
-                await btn.update({content: `Game ended by: ${this.turns[other_turn].toString()} (${color[other_turn]})`, components: [new ActionRowBuilder().addComponents([button,stop,possible])]})
+                await btn.update({content: `Game ended by: ${this.turns[other_turn].toString()} (${color[other_turn]})`, components: [new MessageActionRow().addComponents([button,stop,possible])]})
                 collector.stop()
             }
             if(btn.customId == "click"){

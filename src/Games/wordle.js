@@ -15,7 +15,6 @@ module.exports = class Wordle{
         } else {
             this.word = word
         }
-        console.log(this.word)
         this.guesses = []
         this.tries = 0
     }
@@ -76,17 +75,17 @@ module.exports = class Wordle{
     }
 
     async start(){
-        const Modal = new Modal()
+        const modal = new Modal()
         .setCustomId("worlde")
         .setTitle("Worlde")
         const text = new TextInputComponent()
-        .setStyle(TextInputStyle.Short)
+        .setStyle("SHORT")
         .setMaxLength(5)
         .setMinLength(5)
         .setLabel(`Your guess`)
         .setCustomId(`guess`)
         const act = new MessageActionRow().addComponents([text]);
-        Modal.addComponents([act])
+        modal.addComponents([act])
 
         const button = new MessageButton()
         .setLabel("click to guess")
@@ -103,7 +102,7 @@ module.exports = class Wordle{
         await this.interaction.reply({embeds: [Embed],components: row})
 
         const msg = await this.interaction.fetchReply()
-        const collector = msg.createMessageComponentCollector({filter: f => f.user.id == this.player.id && f.message.id == msg.id ,componentType: ComponentType.Button, time: 600_000} )
+        const collector = msg.createMessageComponentCollector({filter: f => f.user.id == this.player.id && f.message.id == msg.id , time: 600_000} )
 
         collector.on("collect",async btn => {
             if(btn.customId=='stop'){
@@ -111,7 +110,7 @@ module.exports = class Wordle{
                 btn.update({ content:'Wordle ended', components:[] })
                 return
             } else if(btn.customId=='click'){
-                btn.showModal(Modal).then(async() =>{
+                btn.showModal(modal).then(async() =>{
                     const input = new InteractionCollector(this.interaction.client,{time: 60_000})
                     input.on('collect', async i => {
                         if(!i.fields){
@@ -119,15 +118,13 @@ module.exports = class Wordle{
                         } else {
                             const guess = i.fields?.getTextInputValue("guess").toUpperCase()
                             if(this.guesses.includes(guess)){
-                                btn.reply({ content:`You already guessed ${guess.toLowerCase()}`})
+                                i.reply({ content:`You already guessed ${guess.toLowerCase()}`})
                                 input.stop()
                             }else if(!words.includes(guess)){
-                                btn.reply({ content:`${guess.toLowerCase()} is not in the word list`})
+                                i.reply({ content:`${guess.toLowerCase()} is not in the word list`})
                                 input.stop()
                             }else {
                                 this.tries++
-                                // let guess = i.fields?.getTextInputValue("guess").toUpperCase()
-                                // console.log(guess)
                                 const filter_word = this.filter_(guess)
                                 this.guesses.push({'guess':guess, 'filter_word':filter_word})
                                 const embed = this.make_embed()
