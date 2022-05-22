@@ -2,7 +2,7 @@ let Chess = []
 ;(async()=>{
     Chess.push(await import("chess.js"))
 })()
-const { MessageEmbed, MessageAttachment, Modal, ActionRowBuilder, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType} = require("discord.js")
+const { MessageEmbed, Modal, MessageActionRow, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType} = require("discord.js")
 module.exports = class Chess1{
     constructor(interaction,opponent){
         this.interaction = interaction
@@ -62,23 +62,23 @@ module.exports = class Chess1{
         .setStyle(TextInputStyle.Short)
         .setLabel(`Your turn`)
         .setCustomId(`move`)
-        const act = new ActionRowBuilder().addComponents([text]);
+        const act = new MessageActionRow().addComponents([text]);
         Modal.addComponents([act])
         let Embed = await this.createBoard(chess)
         const color = {'w':'White','b':'Black'}
-        const button = new MessageActionRow()
+        const button = new MessageButton()
                        .setLabel("CLICK HERE")
                        .setStyle("PRIMARY")
                        .setCustomId("click")
-        const stop = new MessageActionRow()
+        const stop = new MessageButton()
                         .setLabel("STOP")
                         .setStyle("DANGER")
                         .setCustomId("stop")
-        const possible = new MessageActionRow()
+        const possible = new MessageButton()
                         .setLabel("POSSIBLE MOVES")
                         .setStyle("SECONDARY")
                         .setCustomId("possible")
-        const options = {content: `${color[chess.turn()]}'s turn`,embeds: [Embed],components: [new ActionRowBuilder().addComponents([button,stop,possible])]}
+        const options = {content: `${color[chess.turn()]}'s turn`,embeds: [Embed],components: [new MessageActionRow().addComponents([button,stop,possible])]}
         await this.interaction.reply(options)
         
         const msg = await this.interaction.fetchReply()
