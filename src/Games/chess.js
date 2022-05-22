@@ -2,7 +2,6 @@ let Chess = []
 ;(async()=>{
     Chess.push(await import("chess.js"))
 })()
-const generator = require('chess-image-generator');
 const { MessageEmbed, MessageAttachment, Modal, ActionRowBuilder, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType} = require("discord.js")
 module.exports = class Chess1{
     constructor(interaction,opponent){
@@ -15,17 +14,10 @@ module.exports = class Chess1{
     }
 
     async createBoard(chess, moves=false){
-        const gen = new generator({
-            size: 720,
-            light: 'rgb(200, 200, 200)',
-            dark: '#333333',
-            style: 'merida',
-            flipped: chess.turn() == 'b' ? true : false
-        });
-        this.att = new MessageAttachment(await gen.loadFEN(chess.fen()).generateBuffer(),"chess.png")
+        const fen = encodeURIComponent(chess.fen())
         const Embed = new MessageEmbed()
         .setTitle("Chess")
-        .setImage(`attachment://${this.att.name}`)
+        .setImage(`http://www.jinchess.com/chessboard/?p=${fen}`)
         .setColor(0x7289da)
         if(chess.game_over()){
             let value = undefined
@@ -86,7 +78,7 @@ module.exports = class Chess1{
                         .setLabel("POSSIBLE MOVES")
                         .setStyle("SECONDARY")
                         .setCustomId("possible")
-        const options = {content: `${color[chess.turn()]}'s turn`,embeds: [Embed],components: [new ActionRowBuilder().addComponents([button,stop,possible])],attachments: [this.att]}
+        const options = {content: `${color[chess.turn()]}'s turn`,embeds: [Embed],components: [new ActionRowBuilder().addComponents([button,stop,possible])]}
         await this.interaction.reply(options)
         
         const msg = await this.interaction.fetchReply()
