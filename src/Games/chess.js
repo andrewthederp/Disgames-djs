@@ -2,22 +2,30 @@ let Chess = []
 ;(async()=>{
     Chess.push(await import("chess.js"))
 })()
-
-const { MessageEmbed, Modal, ActionRowBuilder, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType} = require("discord.js")
+const generator = require('chess-image-generator');
+const { MessageEmbed, MessageAttachment, Modal, ActionRowBuilder, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType} = require("discord.js")
 module.exports = class Chess1{
     constructor(interaction,opponent){
         this.interaction = interaction
         this.member = opponent
         this.author = interaction.user
         this.turns = {'w':interaction.user,'b':opponent}
+
         if(!interaction || !opponent) throw new TypeError("Interaction or Opponent missing")
     }
 
     async createBoard(chess, moves=false){
-        const fen = encodeURIComponent(chess.fen())
+        const gen = new generator({
+            size: 720,
+            light: 'rgb(200, 200, 200)',
+            dark: '#333333',
+            style: 'merida',
+            flipped: chess.turn() == 'b' ? true : false
+        });
+        this.att = new MessageAttachment(await gen.loadFEN(chess.fen()).generateBuffer(),"chess.png")
         const Embed = new MessageEmbed()
         .setTitle("Chess")
-        .setImage(`http://www.fen-to-image.com/image/64/double/coords/${fen}`)
+        .setImage(`attachment://${this.att.name}`)
         .setColor(0x7289da)
         if(chess.game_over()){
             let value = undefined
@@ -78,7 +86,7 @@ module.exports = class Chess1{
                         .setLabel("POSSIBLE MOVES")
                         .setStyle("SECONDARY")
                         .setCustomId("possible")
-        const options = {content: `${color[chess.turn()]}'s turn`,embeds: [Embed],components: [new ActionRowBuilder().addComponents([button,stop,possible])]}
+        const options = {content: `${color[chess.turn()]}'s turn`,embeds: [Embed],components: [new ActionRowBuilder().addComponents([button,stop,possible])],attachments: [this.att]}
         await this.interaction.reply(options)
         
         const msg = await this.interaction.fetchReply()
@@ -86,7 +94,6 @@ module.exports = class Chess1{
 
         collector.on("collect",async btn => {
             if(btn.customId == "possible"){
-                let Embed = await this.createBoard(chess, true)
                 await btn.reply({content: `${chess.moves().map(m => `\`${m}\``).join(",")}`, ephemeral:true })
             }
             if(btn.customId == "stop"){
