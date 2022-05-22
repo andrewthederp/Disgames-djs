@@ -2,7 +2,7 @@ let Chess = []
 ;(async()=>{
     Chess.push(await import("chess.js"))
 })()
-const { MessageEmbed, Modal, MessageActionRow, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType} = require("discord.js")
+const { MessageEmbed, Modal, TextInputComponent, TextInputStyle,MessageActionRow, InteractionCollector, ComponentType} = require("discord.js")
 module.exports = class Chess1{
     constructor(interaction,opponent){
         this.interaction = interaction
