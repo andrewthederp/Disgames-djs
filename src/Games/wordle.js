@@ -107,7 +107,8 @@ module.exports = class Wordle{
         collector.on("collect",async btn => {
             if(btn.customId=='stop'){
                 collector.stop()
-                btn.update({ content:'Wordle ended', components:[] })
+                Embed.setDescription(Embed.description+`\nThe word was: ${this.word}`)
+                btn.update({ content:'Wordle ended', components:[] , embeds:[Embed] })
                 return
             } else if(btn.customId=='click'){
                 btn.showModal(modal).then(async() =>{
@@ -130,19 +131,20 @@ module.exports = class Wordle{
                                 this.tries++
                                 const filter_word = this.filter_(guess)
                                 this.guesses.push({'guess':guess, 'filter_word':filter_word})
-                                const embed = this.make_embed()
+                                const Embed = this.make_embed()
                                 if(this.win(filter_word)){
-                                    await i.update({content:'You won!! :tada:', embeds:[embed]})
+                                    await i.update({content:'You won!! :tada:', embeds:[Embed]})
                                     input.stop()
                                     collector.stop()
                                     return
                                 } else if(this.tries==5 && !this.win(filter_word)){
-                                    await i.update({content:'You lost :pensive:', embeds:[embed]})
+                                    Embed.setDescription(Embed.description+`\nThe word was: ${this.word}`)
+                                    await i.update({content:'You lost :pensive:', embeds:[Embed]})
                                     input.stop()
                                     collector.stop()
                                     return
                                 }else {
-                                    await i.update({embeds:[embed]})
+                                    await i.update({embeds:[Embed]})
                                 }
 
                             }
