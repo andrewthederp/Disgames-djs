@@ -119,10 +119,13 @@ module.exports = class Wordle{
                             input.stop()
                         } else {
                             const guess = i.fields?.getTextInputValue("guess").toUpperCase()
-                            if(this.guesses.includes(guess)){
-                                btn.reply({ content:`You already guessed ${guess.toLowerCase()}`})
-                                input.stop()
-                            }else if(!words.includes(guess)){
+                            for(obj in this.guesses){
+                                if(this.guesses[obj]['guess']==guess){
+                                    btn.reply({ content:`You already guessed ${guess.toLowerCase()}`})
+                                    input.stop()
+                                }
+                            }
+                            if(!words.includes(guess)){
                                 btn.reply({ content:`${guess.toLowerCase()} is not in the word list`})
                                 input.stop()
                             }else {
