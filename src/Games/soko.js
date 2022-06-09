@@ -5,7 +5,7 @@ module.exports = class Sokoban{
 		this.options = this.parse_options(options)
 	}
 	parse_options(options){
-		return {'p': options.player || '😳', 'tp': options.playerOnTask || '😳', 't': options.task || '❎', 'b': options.box || '🟫', 'bt': options.boxOnTask || '✅'}
+		return {'p': options.player || '😳', 'tp': options.playerOnTask || '😳', 't': options.task || '❎', 'b': options.box || '🟫', 'bt': options.boxOnTask || '✅', ' ': options.space || '⬛'}
 	}
     format_board(board){
         let lst = []
