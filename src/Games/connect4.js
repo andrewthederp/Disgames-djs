@@ -1,6 +1,6 @@
 const { EmbedBuilder, ButtonBuilder, TextInputBuilder, ActionRowBuilder, ModalBuilder, TextInputStyle, InteractionCollector} = require("discord.js")
 
-module.exports = class MadLibs {
+module.exports = class Connect4 {
     constructor(interaction, options) {
         this.interaction = interaction
         if(!options.red) throw new TypeError("red player missing")
