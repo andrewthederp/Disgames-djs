@@ -1,4 +1,4 @@
-const { EmbedBuilder, ButtonBuilder, TextInputBuilder, ActionRowBuilder, ModalBuilder, TextInputStyle, InteractionCollector} = require("discord.js")
+const { MessageEmbed, MessageButton, TextInputComponent, MessageActionRow, Modal, TextInputStyle, InteractionCollector} = require("discord.js")
 
 module.exports = class Connect4 {
     constructor(interaction, opponent, options) {
@@ -101,38 +101,38 @@ module.exports = class Connect4 {
 	}
 
 	start(){
-		const input = new TextInputBuilder()
+		const input = new TextInputComponent()
 		.setStyle(TextInputStyle.Short)
 		.setLabel("Enter a coordinate")
 		.setCustomId("move")
 		.setMinLength(1)
 		.setMaxLength(1)
-		const modal = new ModalBuilder()
+		const modal = new Modal()
 		.setCustomId("Connect4")
 		.setTitle("Connect4")
-		const action = new ActionRowBuilder().addComponents([input])
+		const action = new MessageActionRow().addComponents([input])
 		modal.addComponents([action])
-		const move = new ButtonBuilder()
+		const move = new MessageButton()
 			.setLabel("Play move!")
 			.setCustomId("move")
 			.setStyle("Primary")
-    	const stop = new ButtonBuilder()
+    	const stop = new MessageButton()
 	        .setLabel("STOP")
 	        .setStyle("Danger")
 	        .setCustomId("stop")
 
-		const Embed = new EmbedBuilder()
+		const Embed = new MessageEmbed()
 			.setTitle("Connect4")
 			.setDescription(`Turn: ${this.turns[this.turn].toString()} (${this.colors[this.turn]})\n\n${this.format_board(this.board)}`)
 			.setColor(0x5865F2)
 
-		const row = [new ActionRowBuilder().addComponents([move, stop])]
+		const row = [new MessageActionRow().addComponents([move, stop])]
 		this.interaction.reply({embeds: [Embed], components: row})
 		const msg = await this.interaction.fetchReply()
 		const collector = msg.createMessageComponentCollector({ filter: m => m.user.id == this.author.id || m.user.id == this.member.id })
 		collector.on('collect', async m => {
 			if(m.customId=='stop'){
-				const Embed = new EmbedBuilder()
+				const Embed = new MessageEmbed()
 					.setDescription(`Game ended by: ${this.turns[this.turn].toString()} (${this.colors[this.turn]})\n\n${this.format_board(this.board)}`)
 					.setColor(0x5865F2)
 				m.update({ embeds:[Embed], components:[] })
